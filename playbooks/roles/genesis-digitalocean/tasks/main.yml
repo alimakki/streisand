@@ -28,6 +28,7 @@
       size_id: "{{ do_small_droplet_size_id }}"
       region_id: "{{ regions[do_region] }}"
       image_id: "{{ do_ubuntu_x64_image_id }}"
+      ipv6: yes
       unique_name: yes
       wait: yes
       api_token: "{{ do_access_token }}"
@@ -51,6 +52,13 @@
 - name: Set the streisand_ipv4_address variable
   set_fact:
     streisand_ipv4_address: "{{ streisand_server.droplet.ip_address }}"
+
+- name: Set the streisand_ipv6_address as a fact
+  set_fact:
+    streisand_ipv6_address: "{{ streisand_server.droplet.networks.v6[0].ip_address }}"
+
+- debug:
+    msg: "streisand ipv6 address {{ streisand_ipv6_address }}"
 
 - name: Set the streisand_server_name variable
   set_fact:

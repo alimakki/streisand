@@ -169,6 +169,7 @@ check_ansible
 # Figure out which genesis role to invoke
 read -r -p "Which provider are you using?
   1. Amazon
+<<<<<<< HEAD
   2. Azure
   3. DigitalOcean
   4. Google
@@ -176,9 +177,24 @@ read -r -p "Which provider are you using?
   6. Rackspace
   7. Localhost (Advanced)
   8. Existing Server (Advanced)
+||||||| merged common ancestors
+  2. Azure
+  3. DigitalOcean
+  4. Google
+  5. Linode
+  6. Rackspace
+=======
+  2. Amazon Lightsail
+  3. Azure
+  4. DigitalOcean
+  5. Google
+  6. Linode
+  7. Rackspace
+>>>>>>> initial commit for lightsail
 : " reply
 
 case "$reply" in
+<<<<<<< HEAD
   1) run_genesis amazon.yml;;
   2) run_genesis azure.yml;;
   3) run_genesis digitalocean.yml;;
@@ -187,5 +203,21 @@ case "$reply" in
   6) run_genesis rackspace.yml;;
   7) local_provision;;
   8) existing_server;;
+||||||| merged common ancestors
+  1) echo; echo; ansible-playbook playbooks/amazon.yml;;
+  2) echo; echo; ansible-playbook playbooks/azure.yml;;
+  3) echo; echo; ansible-playbook playbooks/digitalocean.yml;;
+  4) echo; echo; ansible-playbook playbooks/google.yml;;
+  5) echo; echo; ansible-playbook playbooks/linode.yml;;
+  6) echo; echo; ansible-playbook playbooks/rackspace.yml;;
+=======
+  1) echo; echo; ansible-playbook playbooks/amazon.yml;;
+	2) echo; echo; ansible-playbook playbooks/amazon-lightsail.yml;;
+  3) echo; echo; ansible-playbook playbooks/azure.yml;;
+  4) echo; echo; ansible-playbook playbooks/digitalocean.yml;;
+  5) echo; echo; ansible-playbook playbooks/google.yml;;
+  6) echo; echo; ansible-playbook playbooks/linode.yml;;
+  7) echo; echo; ansible-playbook playbooks/rackspace.yml;;
+>>>>>>> initial commit for lightsail
   *) echo; echo "Invalid provider selected."; exit 1;;
 esac

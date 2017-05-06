@@ -1,0 +1,6 @@
+---
+#Lightsail Blueprint ID
+lightsail_blueprint_id: "ubuntu_16_04"
+
+#Instance type
+lightsail_bundle_id: "nano_1_0"

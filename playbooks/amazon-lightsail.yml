@@ -48,6 +48,10 @@
       prompt: "\nWhat is your AWS Secret Access Key?\n"
       private: no
 
+    - name: "lightsail_ssh_name"
+      prompt: "\n\nThe following information can be found on your Amazon Lightsail accounts panel.\nhttps://lightsail.aws.amazon.com/ls/webapp/account\n\nWhat is the name of the Lightsail SSH key that you would like to use?\n  * This key should match your .ssh/id_rsa.pub file.\n"
+      private: no
+
     - name: "confirmation"
       prompt: "\nStreisand will now set up your server. This process usually takes around ten minutes. Press Enter to begin setup...\n"
 

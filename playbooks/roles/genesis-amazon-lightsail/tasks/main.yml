@@ -10,7 +10,7 @@
     name: "{{ lightsail_instance_name }}"
     region: "{{ lightsail_region }}"
     zone: "{{ lightsail_zone }}"
-    key_pair_name: id_rsa
+    key_pair_name: "{{ lightsail_ssh_name }}"
     blueprint_id: "{{ lightsail_blueprint_id }}"
     bundle_id: "{{ lightsail_bundle_id }}"
     aws_access_key: "{{ aws_access_key }}"
@@ -45,6 +45,6 @@
     ansible_user: ubuntu
     ansible_become: yes
 
-- name: New Lightsail servers are occasionally slow to process incoming SSH connections even after the OpenSSH daemon has started up. Pause for 90 seconds.
+- name: New Lightsail servers are occasionally slow to process incoming SSH connections even after the OpenSSH daemon has started up. Pause for 30 seconds.
   pause:
-    seconds: 90
+    seconds: 30

@@ -3,6 +3,7 @@
   command: cat ~/.ssh/id_rsa.pub
   register: ssh_key
 
+
 - name: Create the Lightsail instance
   lightsail:
     state: present
@@ -15,6 +16,7 @@
     aws_secret_key: "{{ aws_secret_key }}"
     wait_timeout: 500
   register: streisand_server
+
 
 - name: Debug the output
   debug:

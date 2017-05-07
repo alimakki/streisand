@@ -58,7 +58,7 @@
 
     - name: Set the Lightsail Availability zone fact
       set_fact:
-        lightsail_zone: "{{ lightsail_zone_var }}"
+        lightsail_zone: "{{ zones[lightsail_zone_var] }}"
 
     - debug:
         msg: "Lightsail region: {{ lightsail_region }}"

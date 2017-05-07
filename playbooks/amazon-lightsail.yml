@@ -60,6 +60,12 @@
       set_fact:
         lightsail_zone: "{{ lightsail_zone_var }}"
 
+    - debug:
+        msg: "Lightsail region: {{ lightsail_region }}"
+
+    - debug:
+        msg: "Lightsail zone: {{ lightsail_zone }}"
+
   roles:
     - genesis-amazon-lightsail
 

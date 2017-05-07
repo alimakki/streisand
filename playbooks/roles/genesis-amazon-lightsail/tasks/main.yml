@@ -10,6 +10,7 @@
     name: "{{ lightsail_instance_name }}"
     region: "{{ lightsail_region }}"
     zone: "{{ lightsail_zone }}"
+    key_pair_name: id_rsa
     blueprint_id: "{{ lightsail_blueprint_id }}"
     bundle_id: "{{ lightsail_bundle_id }}"
     aws_access_key: "{{ aws_access_key }}"

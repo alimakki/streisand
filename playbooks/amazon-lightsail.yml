@@ -6,10 +6,6 @@
   gather_facts: yes
 
   vars:
-    regions:
-      "1": "us-east-1"
-
-  vars:
     zones:
       "1": "us-east-1a"
       "2": "us-east-1b"
@@ -19,13 +15,13 @@
 
 
   vars_prompt:
-    - name: "lightsail_region_var"
-      prompt: |
-        In what region should the server be located?
-          1. US East       (Northern Virginia)
-        Please choose the number of your region. Press enter for default (#1) region.
-      default: "1"
-      private: no
+    #- name: "lightsail_region_var"
+    #  prompt: |
+    #    In what region should the server be located?
+    #      1. US East       (Northern Virginia)
+    #    Please choose the number of your region. Press enter for default (#1) region.
+    #  default: "1"
+    #  private: no
 
     - name: "lightsail_zone_var"
       prompt: |
@@ -56,9 +52,9 @@
       prompt: "\nStreisand will now set up your server. This process usually takes around ten minutes. Press Enter to begin setup...\n"
 
   pre_tasks:
-    - name: Set the Lightsail Region fact
+    - name: Set the Lightsail region fact
       set_fact:
-        lightsail_region: "{{ regions[lightsail_region_var] }}"
+        lightsail_region: "us-east-1"
 
     - name: Set the Lightsail Availability zone fact
       set_fact:

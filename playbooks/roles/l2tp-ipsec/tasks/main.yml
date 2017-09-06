@@ -4,10 +4,6 @@
     name: "{{ item }}"
   with_items: "{{ libreswan_compilation_dependencies }}"
 
-- name: Install xl2tpd
-  apt:
-    name: xl2tpd
-
 - name: Install xmlto (without the extraordinarily large number of packages it normally recommends)
   apt:
     name: xmlto

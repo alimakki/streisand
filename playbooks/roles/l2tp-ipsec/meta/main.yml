@@ -1,4 +1,5 @@
 ---
 dependencies:
+  - { role: libreswan }
   - { role: ip-forwarding }
   - { role: ufw }

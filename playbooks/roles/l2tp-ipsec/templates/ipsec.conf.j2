@@ -8,39 +8,6 @@ config setup
   nhelpers=0
   interfaces=%defaultroute
 
-{% if streisand_ikev2_enabled %}
-
-conn ikev2-cp
-    left={{ ansible_default_ipv4.address }}
-    leftcert={{ ikev2_certificate }}
-    leftid={{ ansible_default_ipv4.address }}
-    leftsendcert=always
-    leftsubnet={{ ansible_default_ipv4.address }}/32
-    leftrsasigkey=%cert
-    # Clients
-    right=%any
-    rightaddresspool=192.168.66.1-192.168.66.254
-    # optional rightid with restrictions
-    # rightid="C=CA, L=Toronto, O=Libreswan Project, OU=*, CN=*, E=*"
-    rightca=%same
-    rightrsasigkey=%cert
-    # connection configuration
-    # DNS servers for clients to use
-    modecfgdns1=8.8.8.8
-    modecfgdns2=8.8.4.4
-    narrowing=yes
-    dpddelay=30
-    dpdtimeout=120
-    dpdaction=clear
-    auto=add
-    ikev2=insist
-    rekey=no
-    fragmentation=yes
-
-{% endif %}
-
-{% if streisand_l2tp_enabled %}
-
 conn vpnpsk
   connaddrfamily=ipv4
   auto=add
@@ -64,7 +31,3 @@ conn vpnpsk
   dpddelay=30
   dpdtimeout=120
   dpdaction=clear
-
-{% endif %}
-
-

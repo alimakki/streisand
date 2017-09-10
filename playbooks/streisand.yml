@@ -24,6 +24,8 @@
     # compilation issues.
     - role: openconnect
       when: streisand_openconnect_enabled
+    - role: ipsec-ikev2
+      when: streisand_ikev2_enabled
     - role: l2tp-ipsec
       when: streisand_l2tp_enabled
     - role: openvpn

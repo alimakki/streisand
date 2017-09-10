@@ -36,7 +36,7 @@
 - name: Generate IPsec configuration file
   template:
     src: ipsec.conf.j2
-    dest: /etc/ipsec.conf
+    dest: /etc/ipsec.d/l2tp.conf
     owner: root
     group: root
     mode: 0644

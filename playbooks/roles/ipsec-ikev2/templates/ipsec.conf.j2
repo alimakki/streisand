@@ -1,0 +1,36 @@
+version 2.0
+
+config setup
+  nat_traversal=yes
+  virtual_private=%v4:10.0.0.0/8,%v4:192.168.0.0/16,%v4:172.16.0.0/12,%v4:!192.168.42.0/24
+  oe=off
+  protostack=netkey
+  nhelpers=0
+  interfaces=%defaultroute
+
+conn ikev2-cp
+    left={{ ansible_default_ipv4.address }}
+    leftcert={{ ikev2_certificate }}
+    leftid={{ ansible_default_ipv4.address }}
+    leftsendcert=always
+    leftsubnet={{ ansible_default_ipv4.address }}/32
+    leftrsasigkey=%cert
+    # Clients
+    right=%any
+    rightaddresspool=192.168.66.1-192.168.66.254
+    # optional rightid with restrictions
+    # rightid="C=CA, L=Toronto, O=Libreswan Project, OU=*, CN=*, E=*"
+    rightca=%same
+    rightrsasigkey=%cert
+    # connection configuration
+    # DNS servers for clients to use
+    modecfgdns1=8.8.8.8
+    modecfgdns2=8.8.4.4
+    narrowing=yes
+    dpddelay=30
+    dpdtimeout=120
+    dpdaction=clear
+    auto=add
+    ikev2=insist
+    rekey=no
+    fragmentation=yes

@@ -1,0 +1,10 @@
+---
+- name: Restart Libreswan
+  service:
+    name: ipsec
+    state: restarted
+
+- name: Restart rsyslog for Libreswan
+  service:
+    name: rsyslog
+    state: restarted

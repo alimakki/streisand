@@ -1,3 +1,4 @@
+{% for item in vpn_client_names.results %}
 
 conn ikev2
     left={{ ansible_default_ipv4.address }}
@@ -12,8 +13,10 @@ conn ikev2
     rightrsasigkey=%cert
     # connection configuration
     # DNS servers for clients to use
-    modecfgdns={{ upstream_dns_servers | join(',') }}
-    narrowing=no
+    {% for index, item in enumerate(upstream_dns_servers) %}
+    modecfgdns{{ index+1 }} = {{ item }}
+    {% endfor %}
+    narrowing=yes
     dpddelay=30
     dpdtimeout=120
     mobike=yes
@@ -24,8 +27,6 @@ conn ikev2
     sha2-truncbug=no
     fragmentation=yes
     encapsulation=yes
-    # propose AES_GCM using SHA2 as the prf
-    # and diffie-hellman group 19
-    ike=aes_gcm128-sha2;dh19
-    phase2alg=aes_gcm_c-128-null;dh19
+    ike=aes-sha256;dh24,aes_gcm_8_128-null;dh24,aes-sha256;dh20,aes_gcm_8_128-null;dh20
+    phase2alg=aes-sha256;dh24,aes_gcm_8_128-null;dh24,aes-sha256;dh20,aes_gcm_8_128-null;dh20
     phase2=esp

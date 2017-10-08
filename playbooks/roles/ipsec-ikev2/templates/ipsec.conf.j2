@@ -1,19 +1,11 @@
 {% for item in vpn_client_names.results %}
 
-conn {{ item.stdout }}
-    also=ikev2
-    rightid=%fromcert
-    rightcert={{ item.stdout }}
-
-{% endfor %}
-
 conn ikev2
     left={{ ansible_default_ipv4.address }}
-    leftca=ca-certificate
-    leftcert={{ ikev2_server_name.stdout }}
-    leftid=%fromcert
+    leftcert=/etc/ipsec.d/certs
+    leftid={{ ansible_default_ipv4.address }}
     leftsendcert=always
-    leftsubnet={{ ansible_default_ipv4.address }}/32
+    leftsubnet=0.0.0.0/0
     leftrsasigkey=%cert
     # Clients
     # right=%any we only want the ones we generated
@@ -23,9 +15,9 @@ conn ikev2
     rightrsasigkey=%cert
     # connection configuration
     # DNS servers for clients to use
-{% for item in upstream_dns_servers %}
-    modecfgdns{{ loop.index }} = {{ item }}
-{% endfor %}
+    {% for index, item in enumerate(upstream_dns_servers) %}
+    modecfgdns{{ index+1 }} = {{ item }}
+    {% endfor %}
     narrowing=yes
     dpddelay=30
     dpdtimeout=120
@@ -36,6 +28,6 @@ conn ikev2
     sha2-truncbug=no
     fragmentation=yes
     encapsulation=yes
-    ike=aes_gcm256_c,aes_gcm128_c,aes256-sha2_512;dh19,aes128-sha2_512;dh19
-    phase2alg=aes_gcm256_c,aes_gcm128_c,aes256-sha2_512;dh19,aes128-sha2_512;dh19
+    ike=aes-sha256;dh24,aes_gcm_8_128-null;dh24,aes-sha256;dh20,aes_gcm_8_128-null;dh20
+    phase2alg=aes-sha256;dh24,aes_gcm_8_128-null;dh24,aes-sha256;dh20,aes_gcm_8_128-null;dh20
     phase2=esp

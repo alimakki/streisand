@@ -1,19 +1,11 @@
 version 2.0
 
-config setup
-  nat_traversal=yes
-  virtual_private=%v4:10.0.0.0/8,%v4:192.168.0.0/16,%v4:172.16.0.0/12,%v4:!192.168.42.0/24
-  oe=off
-  protostack=netkey
-  nhelpers=0
-  interfaces=%defaultroute
-
-conn ikev2-cp
+conn ikev2
     left={{ ansible_default_ipv4.address }}
-    leftcert={{ ikev2_certificate }}
+    leftcert=/etc/ipsec.d/certs
     leftid={{ ansible_default_ipv4.address }}
     leftsendcert=always
-    leftsubnet={{ ansible_default_ipv4.address }}/32
+    leftsubnet=0.0.0.0/0
     leftrsasigkey=%cert
     # Clients
     right=%any
@@ -24,8 +16,9 @@ conn ikev2-cp
     rightrsasigkey=%cert
     # connection configuration
     # DNS servers for clients to use
-    modecfgdns1=8.8.8.8
-    modecfgdns2=8.8.4.4
+    {% for index, item in enumerate(upstream_dns_servers) %}
+    modecfgdns{{ index+1 }} = {{ item }}
+    {% endfor %}
     narrowing=yes
     dpddelay=30
     dpdtimeout=120
@@ -33,4 +26,9 @@ conn ikev2-cp
     auto=add
     ikev2=insist
     rekey=no
+    sha2-truncbug=no
     fragmentation=yes
+    encapsulation=yes
+    ike=aes-sha256;dh24,aes_gcm_8_128-null;dh24,aes-sha256;dh20,aes_gcm_8_128-null;dh20
+    phase2alg=aes-sha256;dh24,aes_gcm_8_128-null;dh24,aes-sha256;dh20,aes_gcm_8_128-null;dh20
+    phase2=esp

@@ -1,1 +1,49 @@
 ---
+- name: Generate the IPSec-IKEv2 configuration file
+  template:
+    src: ipsec.conf.j2
+    dest: /etc/ipsec.d/ikev2.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: Restart Libreswan
+
+- name: Generate RSA keys for the CA and Server
+  command: openssl genrsa -out {{ item }}.key {{ ikev2_key_size }}
+  args:
+    chdir: "{{ ikev2_path }}"
+    creates: "{{ item }}.key"
+  with_items:
+    - ca
+    - server
+
+- name: Generate RSA keys for the clients
+  command: openssl genrsa -out client.key {{ ikev2_key_size }}
+  args:
+    chdir: "{{ ikev2_path }}/{{ client_name.stdout }}"
+    creates: client.key
+  with_items: "{{ vpn_client_names.results }}"
+  loop_control:
+    loop_var: "client_name"
+    label: "{{ client_name.item }}"
+
+- name: Set the proper permissions on all RSA keys
+  file:
+    path: "{{ ikev2_path }}"
+    recurse: yes
+    state: directory
+    owner: root
+    group: root
+    mode: 0600
+
+- name: Generate CA certificate
+  command: openssl req -nodes -batch -new -x509 -key {{ ikev2_ca }}.key -out {{ ikev2_ca }}.crt -days {{ ikev2_days_valid }} -subj "{{ ikev2_request_subject }}/CN=ca-certificate"
+  args:
+    creates: "{{ ikev2_ca }}.crt"
+
+- name: Generate a random server common name
+  shell: grep -v -P "[\x80-\xFF]" /usr/share/dict/american-english-huge | sed -e "s/'//" | shuf -n 2 | xargs | sed -e 's/ /./g' | cut -c 1-64 > {{ ikev2_server_common_name_file }}
+  args:
+    creates: "{{ ikev2_server_common_name_file }}"
+
+

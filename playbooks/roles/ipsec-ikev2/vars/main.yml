@@ -1,0 +1,2 @@
+---
+ikev2_request_subject: "/C={{ ikev2_key_country }}/ST={{ ikev2_key_province }}/L={{ ikev2_key_city }}/O={{ ikev2_key_org }}/OU={{ ikev2_key_ou }}"

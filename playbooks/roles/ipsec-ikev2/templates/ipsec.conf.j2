@@ -5,7 +5,7 @@ conn ikev2
     leftcert=/etc/ipsec.d/certs
     leftid={{ ansible_default_ipv4.address }}
     leftsendcert=always
-    leftsubnet=0.0.0.0/0
+    leftsubnet={{ ansible_default_ipv4.address }}/32
     leftrsasigkey=%cert
     # Clients
     right=%any

@@ -78,23 +78,6 @@
     group: root
     mode: 0600
 
-- name: Copy the modified rsyslog configuration into place that prevents Libreswan traffic from being logged
-  copy:
-    src: 40-ipsec.rsyslog.conf
-    dest: /etc/rsyslog.d/40-ipsec.conf
-    owner: root
-    group: root
-    mode: 0644
-  notify: Restart rsyslog for Libreswan
-
-- name: Ensure redirects are disabled immediately
-  shell: echo 0 | tee /proc/sys/net/ipv4/conf/*/*_redirects
-
-- name: Generate a certificate database file
-  script: generate-certificate-database.sh
-  args:
-    creates: /etc/ipsec.d/cert8.db
-
 # Ensure l2tp firewall rules are in place
 - import_tasks: firewall.yml
 

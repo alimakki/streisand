@@ -8,7 +8,7 @@
   when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'trusty'
 
 - name: Include Libreswan vars
-  include_vars: "../playbooks/roles/l2tp-ipsec/vars/main.yml"
+  include_vars: "../playbooks/roles/libreswan/vars/main.yml"
 
 - name: Install the Libreswan dependencies that are required for compilation
   apt:

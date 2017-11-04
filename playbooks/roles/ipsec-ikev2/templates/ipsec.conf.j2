@@ -9,7 +9,7 @@ conn ikev2
     leftrsasigkey=%cert
     # Clients
     right=%any
-    rightaddresspool=192.168.66.1-192.168.66.254
+    rightaddresspool=10.10.0.1-10.10.0.254
     # optional rightid with restrictions
     # rightid="C=CA, L=Toronto, O=Libreswan Project, OU=*, CN=*, E=*"
     rightca=%same
@@ -29,6 +29,6 @@ conn ikev2
     sha2-truncbug=no
     fragmentation=yes
     encapsulation=yes
-    ike=aes-sha256;dh24,aes_gcm_8_128-null;dh24,aes-sha256;dh20,aes_gcm_8_128-null;dh20
-    phase2alg=aes-sha256;dh24,aes_gcm_8_128-null;dh24,aes-sha256;dh20,aes_gcm_8_128-null;dh20
+    ike=3des-sha1,3des-sha2,aes-sha1,aes-sha1;modp1024,aes-sha2,aes-sha2;modp1024,aes256-sha2_512
+    phase2alg=3des-sha1,3des-sha2,aes-sha1,aes-sha2,aes256-sha2_512
     phase2=esp

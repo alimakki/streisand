@@ -8,11 +8,21 @@ version 2.0
 #        rightrsasigkey=%cert
 #        rightcert=/etc/ipsec.d/certs/trash.warrior/client.crt
 
+{% for item in vpn_client_names.results %}
+
+conn {{ item.stdout }}
+    also=ikev2
+    rightid=%fromcert
+    rightrsasigkey=%cert
+    rightcert=/etc/ipsec.d/certs/{{ item.stdout }}/client.crt
+
+{% endfor %}
+
 conn ikev2
     left={{ ansible_default_ipv4.address }}
-    leftca=/etc/ipsec.d/certs/ca/ca.crt
-    leftcert=/etc/ipsec.d/certs/ca/server.crt
-    leftid=@{{ ikev2_server_common_name_file.stdout }}
+    leftca=/etc/ipsec.d/certs/ca.crt
+    leftcert=/etc/ipsec.d/certs/server.crt
+    leftid=@{{ ansible_default_ipv4.address }}
     leftsendcert=always
     leftsubnet={{ ansible_default_ipv4.address }}/32
     leftrsasigkey=%cert

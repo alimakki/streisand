@@ -34,14 +34,6 @@
   args:
     chdir: "{{ libreswan_compilation_directory }}"
 
-- name: Generate IPsec secrets file
-  template:
-    src: ipsec.secrets.j2
-    dest: /etc/ipsec.secrets
-    owner: root
-    group: root
-    mode: 0600
-
 - name: Copy the modified rsyslog configuration into place that prevents Libreswan traffic from being logged
   copy:
     src: 40-ipsec.rsyslog.conf

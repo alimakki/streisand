@@ -1,5 +1,18 @@
 version 2.0
 
+# make one for each client
+# common out the stuff and include them
+# conn pluto-1-2
+#        also=mytunnel
+#        left=1.2.3.4
+#        leftid="CN=usercert1"
+#        leftrsasigkey=%cert
+#        leftcert=/etc/ipsec.d/certs/trash.warrior
+#        right=5.6.7.8
+#        rightid="CN=usercert2"
+#        rightrsasigkey=%cert
+#        auto=add
+
 conn ikev2
     left={{ ansible_default_ipv4.address }}
     leftcert=/etc/ipsec.d/certs
@@ -9,7 +22,7 @@ conn ikev2
     leftrsasigkey=%cert
     # Clients
     right=%any
-    rightaddresspool=10.10.0.1-10.10.0.254
+    rightaddresspool=10.0.10.1-10.0.10.254
     # optional rightid with restrictions
     # rightid="C=CA, L=Toronto, O=Libreswan Project, OU=*, CN=*, E=*"
     rightca=%same
@@ -29,6 +42,6 @@ conn ikev2
     sha2-truncbug=no
     fragmentation=yes
     encapsulation=yes
-    ike=3des-sha1,3des-sha2,aes-sha1,aes-sha1;modp1024,aes-sha2,aes-sha2;modp1024,aes256-sha2_512
-    phase2alg=3des-sha1,3des-sha2,aes-sha1,aes-sha2,aes256-sha2_512
+    ike=aes256-sha2_512;modp2048,aes128-sha2_512;modp2048,aes256-sha1;modp1024,aes128-sha1;modp1024
+	esp=aes_gcm256,aes_gcm128,aes256-sha2_512,aes128-sha2_512
     phase2=esp

@@ -29,6 +29,13 @@
   register: ipsec_preshared_key_base64
   changed_when: False
 
+- name: Add the IPsec PSK to ipsec.secrets
+  shell: "echo '{{ ansible_default_ipv4.address }} %any:  PSK {{ ipsec_preshared_key.stdout }}' >> /etc/ipsec.secrets" 
+
+#{% if streisand_ikev2_enabled %}
+#{{ ansible_default_ipv4.address }} %any:  RSA
+#{% endif %}
+
 - name: Generate xl2tpd configuration file
   template:
     src: xl2tpd.conf.j2

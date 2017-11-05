@@ -5,5 +5,5 @@ ikev2_key_city:     "Beverly Hills"
 ikev2_key_org:      "ACME CORPORATION"
 ikve2_key_ou:       "Anvil Department"
 
-ikev2_key_size:     "4096"
+ikev2_key_size:     "2048"
 ikev2_days_valid:   "1825"

@@ -1,18 +1,17 @@
 ---
-- name: Generate the IPsec-IKEv2 configuration file
-  template:
-    src: ipsec.conf.j2
-    dest: /etc/ipsec.d/ikev2.conf
+- name: Create the ikev2 certificates directory directory
+  file:
+    path: "{{ ikev2_path }}"
     owner: root
     group: root
-    mode: 0644
-  notify: Restart Libreswan
+    mode: 0750
+    state: directory
 
 - include_role:
     name: certificates
   vars:
     ca_path:            "{{ ikev2_path }}"
-    tls_ca:             "{{ ikev2_path }}"
+    tls_ca:             "{{ ikev2_ca }}"
     tls_client_path:    "{{ ikev2_path }}"
     vpn_name:           "ipsec_ikev2"
     generate_ca_server: yes
@@ -23,5 +22,14 @@
     tls_server_common_name_file: "{{ ikev2_server_common_name_file }}"
     tls_sans:
       - "{{ streisand_ipv4_address }}"
+
+- name: Generate the IPsec-IKEv2 configuration file
+  template:
+    src: ipsec.conf.j2
+    dest: /etc/ipsec.d/ikev2.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: Restart Libreswan
 
 # ipsec import YourName.p12 -- import p12s into NSS db # "pk12util -i YourName.p12 -d sql:/etc/ipsec.d" 

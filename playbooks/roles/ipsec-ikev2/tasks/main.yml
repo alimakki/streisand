@@ -1,5 +1,5 @@
 ---
-- name: Generate the IPSec-IKEv2 configuration file
+- name: Generate the IPsec-IKEv2 configuration file
   template:
     src: ipsec.conf.j2
     dest: /etc/ipsec.d/ikev2.conf
@@ -8,37 +8,20 @@
     mode: 0644
   notify: Restart Libreswan
 
-- name: Create directories for clients
-  file:
-    path: "{{ ikev2_path }}/{{ client_name.stdout }}"
-    state: directory
-  with_items: "{{ vpn_client_names.results }}"
-  loop_control:
-    loop_var: "client_name"
-    label: "{{ client_name.item }}"
-
 - include_role:
     name: certificates
   vars:
     ca_path:            "{{ ikev2_path }}"
     tls_ca:             "{{ ikev2_path }}"
     tls_client_path:    "{{ ikev2_path }}"
+    vpn_name:           "ipsec_ikev2"
     generate_ca_server: yes
     generate_client:    yes
+    generate_pkcs:      yes
     tls_key_size:                "{{ ikev2_key_size }}"
     tls_request_subject:         "{{ ikev2_request_subject }}"
     tls_server_common_name_file: "{{ ikev2_server_common_name_file }}"
     tls_sans:
       - "{{ streisand_ipv4_address }}"
 
-- name: Generate RSA keys for the CA and Server
-  command: openssl genrsa -out {{ item }}.key {{ ikev2_key_size }}
-  args:
-    chdir: "{{ ikev2_path }}"
-    creates: "{{ item }}.key"
-  with_items:
-    - ca
-    - server
-
-
-
+# ipsec import YourName.p12 -- import p12s into NSS db # "pk12util -i YourName.p12 -d sql:/etc/ipsec.d" 

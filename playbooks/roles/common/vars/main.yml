@@ -33,6 +33,7 @@ streisand_common_packages:
   # A UUID generator with an explicit random function.
   # Used for generating UUIDs for mobileconfig files
   - uuid
+  - gnutls-bin
 
 # Services that are running by default but not needed by Streisand
 streisand_unneeded_packages:

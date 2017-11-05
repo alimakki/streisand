@@ -23,6 +23,9 @@
     tls_sans:
       - "{{ streisand_ipv4_address }}"
 
+- name: Add the IPsec VPN clients to ipsec.secrets
+  shell: "echo '{{ ansible_default_ipv4.address }} : RSA \"etc/ipsec.d/certs/server.key\"' >> /etc/ipsec.secrets"
+
 - name: Generate the IPsec-IKEv2 configuration file
   template:
     src: ipsec.conf.j2
@@ -31,5 +34,3 @@
     group: root
     mode: 0644
   notify: Restart Libreswan
-
-# ipsec import YourName.p12 -- import p12s into NSS db # "pk12util -i YourName.p12 -d sql:/etc/ipsec.d" 

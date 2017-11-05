@@ -1,4 +1,5 @@
 ---
-ikev2_request_subject: "/C={{ ikev2_key_country }}/ST={{ ikev2_key_province }}/L={{ ikev2_key_city }}/O={{ ikev2_key_org }}/OU={{ ikev2_key_ou }}"
+ikev2_request_subject: "/C={{ ikev2_key_country }}/ST={{ ikev2_key_province }}/L={{ ikev2_key_city }}/O={{ ikev2_key_org }}/OU={{ ikve2_key_ou }}"
 ikev2_path: /etc/ipsec.d/certs
+ikev2_ca: "{{ ikev2_path }}/ca"
 ikev2_server_common_name_file: "{{ ikev2_path }}/ikev2_server_common_name"

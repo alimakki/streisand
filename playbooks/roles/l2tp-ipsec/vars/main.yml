@@ -1,3 +1,17 @@
 ---
 chap_password_file: "/etc/ppp/chap-password"
 ipsec_preshared_key_file: "/etc/ipsec.preshared-key"
+ppp_options_file: "/etc/ppp/options.xl2tpd"
+
+l2tp_ipsec_gateway_location: "{{ streisand_gateway_location }}/l2tp-ipsec"
+
+l2tp_ipsec_firewall_rules:
+  - "iptables --wait {{ streisand_iptables_wait }} -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT"
+  - "iptables --wait {{ streisand_iptables_wait }} -A INPUT -i lo -j ACCEPT"
+  - "iptables --wait {{ streisand_iptables_wait }} -A INPUT -p udp --dport 67:68 --sport 67:68 -j ACCEPT"
+  - "iptables --wait {{ streisand_iptables_wait }} -A INPUT -p udp -m multiport --dports 500,4500 -j ACCEPT"
+  - "iptables --wait {{ streisand_iptables_wait }} -A INPUT -p udp --dport 1701 -m policy --dir in --pol ipsec -j ACCEPT"
+  - "iptables --wait {{ streisand_iptables_wait }} -A INPUT -p udp --dport 1701 -j DROP"
+  - "iptables --wait {{ streisand_iptables_wait }} -A FORWARD -i eth+ -o ppp+ -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT"
+  - "iptables --wait {{ streisand_iptables_wait }} -A FORWARD -i ppp+ -o eth+ -j ACCEPT"
+  - "iptables --wait {{ streisand_iptables_wait }} -t nat -A POSTROUTING -s 192.168.42.0/24 -o eth+ -j SNAT --to-source {{ ansible_default_ipv4.address }}"

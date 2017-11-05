@@ -29,8 +29,8 @@ conn ikev2
     rightrsasigkey=%cert
     # connection configuration
     # DNS servers for clients to use
-    {% for index, item in enumerate(upstream_dns_servers) %}
-    modecfgdns{{ index+1 }} = {{ item }}
+    {% for item in upstream_dns_servers %}
+    modecfgdns{{ loop.index+1 }} = {{ item }}
     {% endfor %}
     narrowing=yes
     dpddelay=30

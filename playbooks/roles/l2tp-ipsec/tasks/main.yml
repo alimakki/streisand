@@ -92,15 +92,5 @@
 # Ensure l2tp firewall rules are in place
 - import_tasks: firewall.yml
 
-- name: Enable and start ipsec and l2tp services
-  systemd:
-    daemon_reload: yes
-    name: "{{ item }}"
-    enabled: yes
-    state: restarted
-  with_items:
-    - ipsec
-    - xl2tpd
-
 # Generate l2tp instructions and mobile profiles
 - import_tasks: docs.yml

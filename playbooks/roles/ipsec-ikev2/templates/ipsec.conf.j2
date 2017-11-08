@@ -1,13 +1,5 @@
 version 2.0
 
-# make one for each client
-# common out the stuff and include them
-# conn trash.warrior
-#        also=ikev2
-#        rightid=%fromcert
-#        rightrsasigkey=%cert
-#        rightcert=/etc/ipsec.d/certs/trash.warrior/client.crt
-
 {% for item in vpn_client_names.results %}
 
 conn {{ item.stdout }}

@@ -34,6 +34,14 @@
   args:
     chdir: "{{ libreswan_compilation_directory }}"
 
+- name: Copy the ipsec.secrets file
+  copy:
+    src: ipsec.secrets
+    dest: /etc/ipsec.d/ipsec.secrets
+    owner: root
+    group: root
+    mode: 0600
+
 - name: Copy the modified rsyslog configuration into place that prevents Libreswan traffic from being logged
   copy:
     src: 40-ipsec.rsyslog.conf
@@ -51,15 +59,15 @@
   args:
     creates: /etc/ipsec.d/cert8.db
 
-- name: "Install L2TP/IPsec iptables service file"
+- name: "Install IPsec iptables service file"
   template:
-    src: streisand-l2tp-iptables.service.j2
-    dest: /etc/systemd/system/streisand-l2tp-iptables.service
+    src: ipsec-iptables.service.j2
+    dest: /etc/systemd/system/ipsec-iptables.service
     mode: 0644
 
-- name: "Enable the streisand-l2tp-iptables service"
+- name: "Enable the ipsec-iptables service"
   systemd:
     daemon_reload: yes
-    name: streisand-l2tp-iptables
+    name: ipsec-iptables.service
     enabled: yes
     state: started

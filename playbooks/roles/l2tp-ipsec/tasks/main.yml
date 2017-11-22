@@ -29,8 +29,13 @@
   register: ipsec_preshared_key_base64
   changed_when: False
 
-- name: Add the IPsec PSK to ipsec.secrets
-  shell: "echo '{{ ansible_default_ipv4.address }} streisand:  PSK {{ ipsec_preshared_key.stdout }}' >> /etc/ipsec.secrets"
+- name: Generate the IPsec PSK secrets file
+  template:
+    src: ipsec.psk.secrets.j2
+    dest: /etc/ipsec.psk.secrets
+    owner: root
+    group: root
+    mode: 0600
 
 - name: Create the xl2tpd configuration directory
   file:

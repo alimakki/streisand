@@ -29,7 +29,7 @@ conn ikev2
     # connection configuration
     # DNS servers for clients to use
     {% for item in upstream_dns_servers %}
-    modecfgdns{{ loop.index+1 }} = {{ item }}
+    modecfgdns{{ loop.index }} = {{ item }}
     {% endfor %}
     narrowing=yes
     dpddelay=30

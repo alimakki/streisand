@@ -13,6 +13,7 @@ env:
   matrix:
     - RUN="shellcheck yamlcheck syntax ci" SITE="global_vars/default-site.yml"
     - RUN="ci" SITE="tests/site_vars/l2tp.yml"
+    - RUN="ci" SITE="tests/site_vars/ikev2.yml"
     - RUN="ci" SITE="tests/site_vars/openconnect.yml"
     - RUN="ci" SITE="tests/site_vars/openvpn.yml"
     - RUN="ci" SITE="tests/site_vars/shadowsocks.yml"

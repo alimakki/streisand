@@ -42,6 +42,13 @@
       include_tasks: libreswan-setup.yml
       when: streisand_l2tp_enabled or streisand_ikev2_enabled
 
+    # NOTE(@cpu): We use the `command` module with the `add-apt-repository`
+    # command here because the `apt_repository` Ansible module at the time of
+    # writing will error on the ubuntu-lxc repo in some instances if a mirror is
+    # missing 32bit binary builds even though CI uses a 64bit architecture.
+    - name: Install LXC ppa
+      command: add-apt-repository ppa:ubuntu-lxc/lxd-stable
+
     - name: Ensure consistent & clean apt state
       shell: "{{ item }}"
       with_items:

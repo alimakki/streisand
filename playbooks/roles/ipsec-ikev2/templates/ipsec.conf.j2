@@ -3,7 +3,6 @@
 conn {{ item.stdout }}
     also=ikev2
     rightid=%fromcert
-    rightrsasigkey=%cert
     rightcert=/etc/ipsec.d/certs/{{ item.stdout }}/client.crt
 
 {% endfor %}

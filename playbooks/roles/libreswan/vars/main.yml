@@ -37,6 +37,7 @@ l2tp_ipsec_firewall_rules:
   - "iptables --wait {{ streisand_iptables_wait }} -A FORWARD -i eth+ -o ppp+ -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT"
   - "iptables --wait {{ streisand_iptables_wait }} -A FORWARD -i ppp+ -o eth+ -j ACCEPT"
   - "iptables --wait {{ streisand_iptables_wait }} -t nat -A POSTROUTING -s 192.168.42.0/24 -o eth+ -j SNAT --to-source {{ ansible_default_ipv4.address }}"
+  - "iptables --wait {{ streisand_iptables_wait }} -t nat -A POSTROUTING -s 10.0.10.0/24 -o eth+ -j SNAT --to-source {{ ansible_default_ipv4.address }}"
 
 libreswan_download_urls:
   # This CDN mirrors the Libreswan source code and signature, and

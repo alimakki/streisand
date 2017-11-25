@@ -9,8 +9,8 @@ conn {{ item.stdout }}
 
 conn ikev2
     left={{ ansible_default_ipv4.address }}
-    leftca={{ ikev2_key_org }}
-    leftcert="{{ ikev2_server_name.stdout }}"
+    leftca=ca-certificate
+    leftcert={{ ikev2_server_name.stdout }}
     leftid=%fromcert
     leftsendcert=always
     leftsubnet={{ ansible_default_ipv4.address }}/32

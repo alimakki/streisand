@@ -29,7 +29,7 @@
   changed_when: False
 
 - name: Add the CA public certificate to the NSS database
-  command: "certutil -A -i {{ ikev2_path }}/ca.crt -n \"{{ ikev2_key_org }}\" -k rsa -x -d sql:/etc/ipsec.d -t \"CT,,\" -2"
+  command: "certutil -A -i {{ ikev2_path }}/ca.crt -n \"ca-certificate\" -k rsa -x -d sql:/etc/ipsec.d -t \"CT,,\" -2"
 
 - name: Add the server public certificate to the NSS database
   command: "certutil -A -i {{ ikev2_path }}/server.crt -n \"{{ ikev2_server_name.stdout }}\" -k rsa -x -d sql:/etc/ipsec.d -t \",,\" -1 -6 -8 \"{{ ikev2_server_name.stdout }}\""

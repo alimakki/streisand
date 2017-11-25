@@ -19,7 +19,6 @@ conn ikev2
     # right=%any we only want the ones we generated
     rightaddresspool=10.0.10.1-10.0.10.254
     # optional rightid with restrictions
-    # rightid="C=CA, L=Toronto, O=Libreswan Project, OU=*, CN=*, E=*"
     rightca=%same
     rightrsasigkey=%cert
     # connection configuration
@@ -37,6 +36,6 @@ conn ikev2
     sha2-truncbug=no
     fragmentation=yes
     encapsulation=yes
-    ike=aes256-sha2_512;modp2048,aes128-sha2_512;modp2048,aes256-sha1;modp1024,aes128-sha1;modp1024
+    ike=aes256-sha2_512;modp2048,aes128-sha2_512;modp2048
     esp=aes_gcm256,aes_gcm128,aes256-sha2_512,aes128-sha2_512
     phase2=esp

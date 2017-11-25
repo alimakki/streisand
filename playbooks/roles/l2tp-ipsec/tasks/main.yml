@@ -66,7 +66,7 @@
 - name: Generate the IPsec PSK secrets file
   template:
     src: ipsec.psk.secrets.j2
-    dest: /etc/ipsec.psk.secrets
+    dest: /etc/ipsec.d/ipsec.psk.secrets
     owner: root
     group: root
     mode: 0600

@@ -3,20 +3,20 @@
 conn {{ item.stdout }}
     also=ikev2
     rightid=%fromcert
-    rightcert=/etc/ipsec.d/certs/{{ item.stdout }}/client.crt
+    rightcert={{ item.stdout }}
 
 {% endfor %}
 
 conn ikev2
     left={{ ansible_default_ipv4.address }}
-    leftca=/etc/ipsec.d/certs/ca.crt
-    leftcert=/etc/ipsec.d/certs/server.crt
-    leftid=@{{ ansible_default_ipv4.address }}
+    leftca={{ ikev2_key_org }}
+    leftcert={{ ikev2_server_name.stdout }}
+    leftid=%fromcert
     leftsendcert=always
     leftsubnet={{ ansible_default_ipv4.address }}/32
     leftrsasigkey=%cert
     # Clients
-    right=%any
+    # right=%any we only want the ones we generated
     rightaddresspool=10.0.10.1-10.0.10.254
     # optional rightid with restrictions
     # rightid="C=CA, L=Toronto, O=Libreswan Project, OU=*, CN=*, E=*"
@@ -24,9 +24,9 @@ conn ikev2
     rightrsasigkey=%cert
     # connection configuration
     # DNS servers for clients to use
-    {% for item in upstream_dns_servers %}
+{% for item in upstream_dns_servers %}
     modecfgdns{{ loop.index }} = {{ item }}
-    {% endfor %}
+{% endfor %}
     narrowing=yes
     dpddelay=30
     dpdtimeout=120
@@ -38,5 +38,5 @@ conn ikev2
     fragmentation=yes
     encapsulation=yes
     ike=aes256-sha2_512;modp2048,aes128-sha2_512;modp2048,aes256-sha1;modp1024,aes128-sha1;modp1024
-	esp=aes_gcm256,aes_gcm128,aes256-sha2_512,aes128-sha2_512
+    esp=aes_gcm256,aes_gcm128,aes256-sha2_512,aes128-sha2_512
     phase2=esp

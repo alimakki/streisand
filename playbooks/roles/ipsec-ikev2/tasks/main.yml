@@ -23,8 +23,13 @@
     tls_sans:
       - "{{ streisand_ipv4_address }}"
 
-- name: Add the IPsec VPN clients to ipsec.secrets
-  shell: "echo '{{ ansible_default_ipv4.address }} : RSA \"etc/ipsec.d/certs/server.key\"' >> /etc/ipsec.secrets"
+- name: Generate the IPsec PSK secrets file
+  template:
+    src: ipsec.ikev2.secrets.j2
+    dest: /etc/ipsec.d/ipsec.ikev2.secrets
+    owner: root
+    group: root
+    mode: 0600
 
 - name: Generate the IPsec-IKEv2 configuration file
   template:

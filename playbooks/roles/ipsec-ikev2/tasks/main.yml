@@ -23,13 +23,40 @@
     tls_sans:
       - "{{ streisand_ipv4_address }}"
 
-- name: Generate the IPsec PSK secrets file
-  template:
-    src: ipsec.ikev2.secrets.j2
-    dest: /etc/ipsec.d/ipsec.ikev2.secrets
-    owner: root
-    group: root
-    mode: 0600
+- name: Register the IKEv2 server common name
+  command: cat "{{ ikev2_server_common_name_file }}"
+  register: ikev2_server_name
+  changed_when: False
+
+- name: Add the CA public certificate to the NSS database
+  command: "certutil -A -i {{ ikev2_path }}/ca.crt -n \"{{ ikev2_key_org }}\" -k rsa -x -d sql:/etc/ipsec.d -t \"CT,,\" -2"
+
+- name: Add the server public certificate to the NSS database
+  command: "certutil -A -i {{ ikev2_path }}/server.crt -n \"{{ ikev2_server_name.stdout }}\" -k rsa -x -d sql:/etc/ipsec.d -t \",,\" -1 -6 -8 \"{{ ikev2_server_name.stdout }}\""
+
+- name: Add the client public certificate(s) to the NSS database
+  command: "certutil -A -i {{ ikev2_path }}/{{ client.stdout }}/client.crt -n \"{{ client.stdout }}\" -k rsa -x -d sql:/etc/ipsec.d -t \",,\" -1 -6 -8 \"{{ client.stdout }}\""
+  with_items: "{{ vpn_client_names.results }}"
+  loop_control:
+    loop_var: "client"
+    label: "{{ client.item }}"
+
+- name: Export the p12 file that contain the servier certificate, private key, and CA certificate
+  command: >
+    openssl pkcs12 -export
+    -in {{ ikev2_path }}/server.crt
+    -inkey {{ ikev2_path }}/server.key
+    -name {{ ikev2_server_name.stdout }}
+    -out {{ ikev2_path }}/{{ ikev2_server_name.stdout }}.p12
+    -certfile {{ ikev2_path }}/ca.crt
+    -passout pass:"foobar"
+  creates: "{{ ikev2_path }}/{{ ikev2_server_name.stdout }}.p12"
+
+- name: Import the server p12 file into the NSS database
+  expect:
+    command: "ipsec import {{ ikev2_path }}/{{ ikev2_server_name.stdout }}.p12"
+    responses:
+      "Enter password for PKCS12 file": "foobar"
 
 - name: Generate the IPsec-IKEv2 configuration file
   template:

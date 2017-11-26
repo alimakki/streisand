@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PayloadContent</key>
+	<array>
+		<dict>
+            <key>PayloadCertificateFileName</key>
+            <string>ca.crt</string>
+            <key>PayloadContent</key>
+            <data>
+            {{ ikev2_ca_base64.stdout }}
+            </data>
+            <key>PayloadDescription</key>
+            <string>IKEv2 Root CA</string>
+            <key>PayloadDisplayName</key>
+            <string>ca-certificate</string>
+            <key>PayloadIdentifier</key>
+            <string>com.apple.security.root.{{ ikev2_root_mobileconfig_uuid.stdout }}</string>
+            <key>PayloadType</key>
+            <string>com.apple.security.root</string>
+            <key>PayloadUUID</key>
+            <string>{{ ikev2_root_mobileconfig_uuid.stdout }}</string>
+            <key>PayloadVersion</key>
+            <integer>1</integer>
+        </dict>
+		<dict>
+			<key>Password</key>
+			<string>{{ client_content[2].stdout }}</string>
+			<key>PayloadCertificateFileName</key>
+			<string>{{ client_content[0].stdout }}.p12</string>
+			<key>PayloadContent</key>
+			<data>
+			{{ client_content[1].stdout }}
+			</data>
+			<key>PayloadDescription</key>
+			<string>Client PKCS12 certificate</string>
+			<key>PayloadDisplayName</key>
+			<string>{{ client_content[0].stdout }}.p12</string>
+			<key>PayloadIdentifier</key>
+			<string>com.apple.security.pkcs12.{{ ikev2_client_mobileconfig_uuid.stdout }}</string>
+			<key>PayloadType</key>
+			<string>com.apple.security.pkcs12</string>
+			<key>PayloadUUID</key>
+			<string>{{ ikev2_client_mobileconfig_uuid.stdout }}</string>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>IKEv2</key>
+			<dict>
+				<key>AuthenticationMethod</key>
+				<string>Certificate</string>
+				<key>ChildSecurityAssociationParameters</key>
+				<dict>
+					<key>DiffieHellmanGroup</key>
+					<integer>19</integer>
+					<key>EncryptionAlgorithm</key>
+					<string>AES-256-GCM</string>
+					<key>IntegrityAlgorithm</key>
+					<string>SHA2-512</string>
+					<key>LifeTimeInMinutes</key>
+					<integer>10</integer>
+				</dict>
+				<key>DeadPeerDetectionRate</key>
+				<string>Medium</string>
+				<key>DisableMOBIKE</key>
+				<integer>0</integer>
+				<key>DisableRedirect</key>
+				<integer>1/integer>
+				<key>EnableCertificateRevocationCheck</key>
+				<integer>0</integer>
+				<key>EnablePFS</key>
+				<true/>
+				<key>IKESecurityAssociationParameters</key>
+				<dict>
+					<key>DiffieHellmanGroup</key>
+					<integer>19</integer>
+					<key>EncryptionAlgorithm</key>
+					<string>AES-256-GCM</string>
+					<key>IntegrityAlgorithm</key>
+					<string>SHA2-512</string>
+					<key>LifeTimeInMinutes</key>
+					<integer>10</integer>
+				</dict>
+				<key>LocalIdentifier</key>
+				<string>{{ client_content[0].stdout }}</string>
+				<key>PayloadCertificateUUID</key>
+				<string>{{ ikev2_client_mobileconfig_uuid.stdout }}</string>
+				<key>RemoteAddress</key>
+				<string>{{ streisand_ipv4_address }}</string>
+				<key>RemoteIdentifier</key>
+				<string>{{ tls_server_common_name.stdout }}</string>
+				<key>ServerCertificateCommonName</key>
+				<string>{{ tls_server_common_name.stdout }}</string>
+				<key>ServerCertificateIssuerCommonName</key>
+				<string>ca-certificate</string>
+				<key>UseConfigurationAttributeInternalIPSubnet</key>
+				<integer>0</integer>
+			</dict>
+			<key>IPv4</key>
+			<dict>
+				<key>OverridePrimary</key>
+				<integer>1</integer>
+			</dict>
+			<key>PayloadDescription</key>
+			<string>Configures VPN settings</string>
+			<key>PayloadDisplayName</key>
+			<string>IPsec IKEv2 VPN - {{ client_content[0].stdout }}</string>
+			<key>PayloadIdentifier</key>
+			<string>com.apple.vpn.managed.{{ ikev2_managed_mobileconfig_uuid }}</string>
+			<key>PayloadType</key>
+			<string>com.apple.vpn.managed</string>
+			<key>PayloadUUID</key>
+			<string>{{ ikev2_managed_mobileconfig_uuid }}</string>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+			<key>Proxies</key>
+			<dict>
+				<key>HTTPEnable</key>
+				<integer>0</integer>
+				<key>HTTPSEnable</key>
+				<integer>0</integer>
+			</dict>
+			<key>UserDefinedName</key>
+			<string>streisand-ipsec-{{ client_content[0].stdout }}</string>
+			<key>VPNType</key>
+			<string>IKEv2</string>
+		</dict>
+	</array>
+	<key>PayloadDisplayName</key>
+	<string>streisand-ikev2-{{ client_content[0].stdout }}</string>
+	<key>PayloadIdentifier</key>
+	<string>streisand.{{ ikev2_config_mobileconfig_uuid.stdout }}</string>
+	<key>PayloadRemovalDisallowed</key>
+	<false/>
+	<key>PayloadType</key>
+	<string>Configuration</string>
+	<key>PayloadUUID</key>
+	<string>{{ ocserv_global_mobileconfig_uuid.stdout }}</string>
+	<key>PayloadVersion</key>
+	<integer>1</integer>
+</dict>
+</plist>

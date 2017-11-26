@@ -36,6 +36,6 @@ conn ikev2
     sha2-truncbug=no
     fragmentation=yes
     encapsulation=yes
-    ike=aes256-sha2_512;modp2048,aes128-sha2_512;modp2048
-    esp=aes_gcm256,aes_gcm128,aes256-sha2_512,aes128-sha2_512
+    ike=aes_gcm256_c,aes_gcm128_c,aes256-sha2_512;dh19,aes128-sha2_512;dh19
+    phase2alg=aes_gcm256_c,aes_gcm128_c,aes256-sha2_512;dh19,aes128-sha2_512;dh19
     phase2=esp

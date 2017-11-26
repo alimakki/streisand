@@ -28,6 +28,65 @@
   register: ikev2_server_name
   changed_when: False
 
+- name: Base64 encode the CA and server certificate
+  shell: "cat {{ ikev2_path }}/server.crt {{ ikev2_path }}/ca.crt | openssl base64"
+  register: ikev2_ca_base64
+  changed_when: False
+
+- name: Base64 encode the client PKCS12 file(s)
+  command: "openssl base64 -in {{ ikev2_path }}/{{ client_name.stdout }}.p12"
+  register: ikev2_clients_base64
+  changed_when: False
+  with_items: "{{ vpn_client_names.results }}"
+  loop_control:
+    loop_var: "client_name"
+    label: "{{ client_name.item }}"
+
+- name: Generate a UUID for .mobileconfig root certificate
+  command: uuid -v4
+  register: ikev2_root_mobileconfig_uuid
+  changed_when: False
+
+- name: Generate a UUID for .mobileconfig client PKCS12 certificate
+  command: uuid -v4
+  register: ikev2_client_mobileconfig_uuid
+  changed_when: False
+
+- name: Generate a UUID for .mobileconfig vpn payload identifier
+  command: uuid -v4
+  register: ikev2_payload_mobileconfig_uuid
+  changed_when: False
+
+- name: Generate a UUID for .mobileconfig managed vpn identifier
+  command: uuid -v4
+  register: ikev2_managed_mobileconfig_uuid
+  changed_when: False
+
+- name: Generate a UUID for .mobileconfig config payload identifier
+  command: uuid -v4
+  register: ikev2_config_mobileconfig_uuid
+  changed_when: False
+
+- name: Generate a UUID for .mobileconfig global identifier
+  command: uuid -v4
+  register: ikev2_global_mobileconfig_uuid
+  changed_when: False
+
+- name: Generate the iOS client mobileconfig file(s)
+  template:
+    src: ikev2.mobileconfig.j2
+    dest: "{{ ikev2_path }}/{{ client_content[0].stdout }}/{{ client_content[0].stdout }}.mobileconfig"
+    owner: root
+    group: root
+    mode: 0600
+  with_together:
+    - "{{ vpn_client_names.results }}"
+    - "{{ ikev2_clients_base64.results }}"
+    - "{{ vpn_client_pkcs12_password_list.results }}"
+  loop_control:
+    loop_var: "client_content"
+    label: "{{ client_content[0].item }}"
+
 - name: Add the CA public certificate to the NSS database
   command: "certutil -A -i {{ ikev2_path }}/ca.crt -n \"ca-certificate\" -k rsa -x -d sql:/etc/ipsec.d -t \"CT,,\" -2"
 

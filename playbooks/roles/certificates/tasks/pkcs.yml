@@ -29,13 +29,13 @@
   changed_when: False
 
 - name: "Convert the {{ vpn_name }} client keys and certificates into PKCS #12 format"
-  command: >
+  shell: >
     openssl pkcs12 -export
     -in {{ tls_client_path }}/{{ vpn_client_password.client_name.stdout }}/client.crt
     -inkey {{ tls_client_path }}/{{ vpn_client_password.client_name.stdout }}/client.key
     -name {{ vpn_client_password.client_name.stdout }}
     -out {{ tls_client_path }}/{{ vpn_client_password.client_name.stdout }}.p12
-    -certfile {{ tls_client_path }}/ca.crt
+    -certfile `cat {{ tls_client_path }}/server.crt {{ tls_client_path }}/ca.crt`
     -passout pass:"{{ vpn_client_password.stdout }}"
   creates: "{{ tls_client_path }}/{{ vpn_client_password.client_name.stdout }}.p12"
   with_items: "{{ vpn_client_pkcs12_password_list.results }}"

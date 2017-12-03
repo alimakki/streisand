@@ -48,6 +48,11 @@
     dest: "{{ ocserv_compilation_directory }}"
     mode: 0600
 
+- name: Ensure that git is installed
+      apt:
+        name: git
+        state: latest
+
 - name: Appy custom MTU patches
   shell: "cd {{ ocserv_compilation_directory }} ; git apply ocserv_mtu_revert.patch"
 #  args:

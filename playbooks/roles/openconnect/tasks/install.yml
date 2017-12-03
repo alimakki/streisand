@@ -42,6 +42,17 @@
     group: root
     creates: "{{ ocserv_compilation_directory }}/README.md"
 
+- name: Copy the MTU patch file
+  copy:
+    src: ocserv_mtu_revert.patch
+    dest: "{{ ocserv_compilation_directory }}"
+    mode: 0600
+
+- name: Appy custom MTU patches
+  shell: "cd {{ ocserv_compilation_directory }} ; git apply ocserv_mtu_revert.patch"
+#  args:
+#    chrdir: "{{ ocserv_compilation_directory }}"
+
 - name: Compile and install ocserv
   shell: ./configure && make -j {{ ansible_processor_cores }} && make install
   args:

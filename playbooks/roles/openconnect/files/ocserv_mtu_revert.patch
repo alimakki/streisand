@@ -1,0 +1,155 @@
+diff --git a/src/worker-vpn.c b/src/worker-vpn.c
+index d901319d..5c11c687 100644
+--- a/src/worker-vpn.c
++++ b/src/worker-vpn.c
+@@ -48,7 +48,7 @@
+ #include <signal.h>
+ #include <poll.h>
+ 
+-#if defined(__linux__) && !defined(IPV6_PATHMTU)
++#if defined(__linux__) &&!defined(IPV6_PATHMTU)
+ # define IPV6_PATHMTU 61
+ #endif
+ 
+@@ -74,13 +74,6 @@
+ #define CSTP_DTLS_OVERHEAD 1
+ #define CSTP_OVERHEAD 8
+ 
+-#define IP_HEADER_SIZE 20
+-#define IPV6_HEADER_SIZE 40
+-#define TCP_HEADER_SIZE 20
+-#define UDP_HEADER_SIZE 8
+-
+-#define MSS_ADJUST(x) x += TCP_HEADER_SIZE + ((ws->proto == AF_INET)?(IP_HEADER_SIZE):(IPV6_HEADER_SIZE))
+-
+ struct worker_st *global_ws = NULL;
+ 
+ static int terminate = 0;
+@@ -947,45 +940,11 @@ void mtu_ok(worker_st * ws)
+ 			x += r % diff; \
+ 		}
+ 
+-int get_pmtu_approx(worker_st *ws)
+-{
+-	socklen_t sl;
+-	int ret, e;
+-
+-#if defined(__linux__) && defined(TCP_INFO)
+-	struct tcp_info ti;
+-	sl = sizeof(ti);
+-
+-	ret = getsockopt(ws->conn_fd, IPPROTO_TCP, TCP_INFO, &ti, &sl);
+-	if (ret == -1) {
+-		e = errno;
+-		oclog(ws, LOG_INFO, "error in getting TCP_INFO: %s",
+-		      strerror(e));
+-		return -1; 
+-	} else {
+-		return ti.tcpi_pmtu;
+-	}
+-#else
+-	int max = -1;
+-
+-	sl = sizeof(max);
+-	ret = getsockopt(ws->conn_fd, IPPROTO_TCP, TCP_MAXSEG, &max, &sl);
+-	if (ret == -1) {
+-		e = errno;
+-		oclog(ws, LOG_INFO, "error in getting TCP_MAXSEG: %s",
+-		      strerror(e));
+-		return -1;
+-	} else {
+-		MSS_ADJUST(max);
+-		return max;
+-	}
+-#endif
+-}
+-
+ static
+ int periodic_check(worker_st * ws, struct timespec *tnow, unsigned dpd)
+ {
+-	int max, ret;
++	socklen_t sl;
++	int max, e, ret;
+ 	time_t now = tnow->tv_sec;
+ 	time_t periodic_check_time = PERIODIC_CHECK_TIME;
+ 
+@@ -1075,11 +1034,20 @@ int periodic_check(worker_st * ws, struct timespec *tnow, unsigned dpd)
+ 	}
+ 
+ 	if (ws->conn_type != SOCK_TYPE_UNIX && ws->udp_state != UP_DISABLED) {
+-		max = get_pmtu_approx(ws);
+-		if (max > 0 && max < ws->link_mtu) {
+-			oclog(ws, LOG_DEBUG, "reducing MTU due to TCP/PMTU to %u",
+-			      max);
+-			link_mtu_set(ws, max);
++		sl = sizeof(max);
++		ret = getsockopt(ws->conn_fd, IPPROTO_TCP, TCP_MAXSEG, &max, &sl);
++		if (ret == -1) {
++			e = errno;
++			oclog(ws, LOG_INFO, "error in getting TCP_MAXSEG: %s",
++			      strerror(e));
++		} else {
++			max -= 13;
++			/*oclog(ws, LOG_DEBUG, "TCP MSS is %u", max); */
++			if (max > 0 && max < ws->link_mtu) {
++				oclog(ws, LOG_DEBUG, "reducing MTU due to TCP MSS to %u",
++				      max);
++				link_mtu_set(ws, max);
++			}
+ 		}
+ 	}
+ 
+@@ -1522,6 +1490,11 @@ static void set_socket_timeout(worker_st * ws, int fd)
+ 	}
+ }
+ 
++#define IP_HEADER_SIZE 20
++#define IPV6_HEADER_SIZE 40
++#define TCP_HEADER_SIZE 8
++#define UDP_HEADER_SIZE 8
++
+ /* wild but conservative guess; this ciphersuite has the largest overhead */
+ #define MAX_CSTP_CRYPTO_OVERHEAD (CSTP_OVERHEAD+tls_get_overhead(GNUTLS_TLS1_0, GNUTLS_CIPHER_AES_128_CBC, GNUTLS_MAC_SHA1))
+ #define MAX_DTLS_CRYPTO_OVERHEAD (CSTP_DTLS_OVERHEAD+tls_get_overhead(GNUTLS_DTLS1_0, GNUTLS_CIPHER_AES_128_CBC, GNUTLS_MAC_SHA1))
+@@ -1601,7 +1574,7 @@ static int connect_handler(worker_st * ws)
+ 	struct http_req_st *req = &ws->req;
+ 	struct pollfd pfd[4];
+ 	unsigned pfd_size;
+-	int max, ret, t;
++	int e, max, ret, t;
+ 	char *p;
+ 	unsigned rnd;
+ #ifdef HAVE_PPOLL
+@@ -1610,6 +1583,7 @@ static int connect_handler(worker_st * ws)
+ 	unsigned tls_pending, dtls_pending = 0, i;
+ 	struct timespec tnow;
+ 	unsigned ip6;
++	socklen_t sl;
+ 	sigset_t emptyset, blockset;
+ 
+ 	sigemptyset(&blockset);
+@@ -1722,11 +1696,19 @@ static int connect_handler(worker_st * ws)
+ 	/* Attempt to use the TCP connection maximum segment size to set a more
+ 	 * precise MTU. */
+ 	if (ws->conn_type != SOCK_TYPE_UNIX) {
+-		max = get_pmtu_approx(ws);
+-		if (max > 0 && max < ws->vinfo.mtu) {
+-			oclog(ws, LOG_DEBUG, "reducing MTU due to TCP/PMTU to %u",
+-			      max);
+-			link_mtu_set(ws, max);
++		sl = sizeof(max);
++		ret = getsockopt(ws->conn_fd, IPPROTO_TCP, TCP_MAXSEG, &max, &sl);
++		if (ret == -1) {
++			e = errno;
++			oclog(ws, LOG_INFO, "error in getting TCP_MAXSEG: %s",
++			      strerror(e));
++		} else {
++			max -= 13;
++			if (max > 0 && max < ws->vinfo.mtu) {
++				oclog(ws, LOG_INFO,
++				      "reducing MTU due to TCP MSS to %u (from %u)", max, ws->vinfo.mtu);
++				ws->vinfo.mtu = max;
++			}
+ 		}
+ 	}
+ 

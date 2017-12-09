@@ -72,18 +72,6 @@
   register: ikev2_global_mobileconfig_uuid
   changed_when: False
 
-- name: Debug the PKCS12 passowrds
-  debug:
-    msg: "---------------{{ vpn_client_pkcs12_password_list.results }}---------------"
-
-- name: Debug the VPN client names
-  debug:
-    msg: "---------------{{ vpn_client_names.results }}---------------"
-
-- name: Debug the IKEv2 client base64s
-  debug:
-    msg: "---------------{{ ikev2_clients_base64.results }}---------------"
-
 - name: Generate the iOS client mobileconfig file(s)
   template:
     src: ikev2.mobileconfig.j2

@@ -22,6 +22,7 @@ dopy==0.3.5
 apache-libcloud>=1.5.0
 
 # Linode
+pycurl
 linode-python
 
 # Rackspace

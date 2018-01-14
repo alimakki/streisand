@@ -52,6 +52,14 @@
     - name: start lxd
       command: snap start lxd
 
+    - name: ls -ll lxd
+      shell: lx -ll /var/snap/lxd/common/lxd
+      register: lxd_dir
+
+    - name: debug the contents of the lxd directory
+      debug:
+        msg: "{{ lxd_dir.stdout }}"
+
     - name: set permission on lxd daemon
       file:
         path: /var/snap/lxd/common/lxd/unix.socket

@@ -28,9 +28,9 @@
       include_tasks: libreswan-setup.yml
       when: streisand_l2tp_enabled
 
-    - name: Add the Xenial backports deb repository
+    - name: Add the trusty backports deb repository
       apt_repository:
-        repo: deb http://archive.ubuntu.com/ubuntu xenial-backports main restricted universe multiverse
+        repo: deb http://archive.ubuntu.com/ubuntu trusty-backports main restricted universe multiverse
         state: present
 
     - name: Ensure consistent & clean apt state
@@ -43,7 +43,7 @@
       apt:
         name: lxd
         state: latest
-        default_release: xenial-backports
+        default_release: trusty-backports
 
     - name: lxd new group
       shell: newgrp lxd

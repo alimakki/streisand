@@ -49,17 +49,6 @@
     - name: lxd new group
       shell: newgrp lxd
 
-    - block:
-        - name: lxd init config
-          shell: lxd init --auto --storage-backend dir
-
-        - name: lxd create network
-          shell: lxc network create testbr0
-
-        - name: lxd attach network to default profile
-          shell: lxc network attach-profile testbr0 default eth0
-      ignore_errors: yes
-
     - name: restart lxd
       service:
         name: lxd
@@ -71,8 +60,19 @@
 
     - name: set permission on lxd daemon
       file:
-        path: /var/lib/lxd/unix.socket
+        path: /var/snap/lxd/common/lxd/unix.socket
         mode: "0777"
+
+    - block:
+        - name: lxd init config
+          shell: lxd init --auto --storage-backend dir
+
+        - name: lxd create network
+          shell: lxc network create testbr0
+
+        - name: lxd attach network to default profile
+          shell: lxc network attach-profile testbr0 default eth0
+      ignore_errors: yes
 
     - name: Retrieve the Ubuntu Xenial AMD64 LXC image fingerprint
       uri:

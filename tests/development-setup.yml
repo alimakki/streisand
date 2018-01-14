@@ -49,19 +49,17 @@
     - name: lxd new group
       shell: newgrp lxd
 
-    - name: restart lxd
-      service:
-        name: lxd
-        state: restarted
+    - name: start lxd
+      command: snap start lxd
 
     - name: pause
       pause:
         seconds: 10
 
-    - name: set permission on lxd daemon
-      file:
-        path: /var/snap/lxd/common/lxd/unix.socket
-        mode: "0777"
+    #- name: set permission on lxd daemon
+    #  file:
+    #    path: /var/snap/lxd/common/lxd/unix.socket
+    #    mode: "0777"
 
     - block:
         - name: lxd init config

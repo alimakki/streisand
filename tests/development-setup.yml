@@ -52,6 +52,11 @@
         name: lxd
         state: latest
 
+    - name: Install lxd-client
+      apt:
+        name: lxd-client
+        state: latest
+
     - name: lxd new group
       shell: newgrp lxd
 

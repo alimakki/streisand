@@ -10,7 +10,6 @@ sudo: required
 env:
   global:
     - ANSIBLE_CONFIG=tests/ansible.cfg
-    - LXC_NAME=ubuntu1604 LXC_DISTRO-ubuntu LXC_RELEASE=xenial
   matrix:
     - RUN="shellcheck yamlcheck syntax ci" SITE="global_vars/default-site.yml"
     - RUN="ci" SITE="tests/site_vars/l2tp.yml"

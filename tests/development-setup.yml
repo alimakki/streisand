@@ -51,13 +51,13 @@
 
     - block:
         - name: lxd init config
-          shell: /snap/bin/lxd init --auto --storage-backend dir
+          shell: lxd init --auto --storage-backend dir
 
         - name: lxd create network
-          shell: /snap/bin/lxc network create testbr0
+          shell: lxc network create testbr0
 
         - name: lxd attach network to default profile
-          shell: /snap/bin/lxc network attach-profile testbr0 default eth0
+          shell: lxc network attach-profile testbr0 default eth0
       ignore_errors: yes
 
     - name: restart lxd

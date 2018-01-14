@@ -29,7 +29,7 @@
       when: streisand_l2tp_enabled
 
     - name: Add the Xenial backports deb repository
-      apt_repositoy:
+      apt_repository:
         repo: deb http://archive.ubuntu.com/ubuntu xenial-backports main restricted universe multiverse
         state: present
 

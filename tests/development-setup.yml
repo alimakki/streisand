@@ -28,6 +28,11 @@
       include_tasks: libreswan-setup.yml
       when: streisand_l2tp_enabled
 
+    - name: Add the Xenial backports deb repository
+      apt_repositoy:
+        repo: deb http://archive.ubuntu.com/ubuntu xenial-backports main restricted universe multiverse
+        state: present
+
     - name: Ensure consistent & clean apt state
       shell: "{{ item }}"
       with_items:

@@ -28,11 +28,6 @@
       include_tasks: libreswan-setup.yml
       when: streisand_l2tp_enabled
 
-    - name: Add the trusty backports deb repository
-      apt_repository:
-        repo: deb http://archive.ubuntu.com/ubuntu trusty-backports main restricted universe multiverse
-        state: present
-
     - name: Ensure consistent & clean apt state
       shell: "{{ item }}"
       with_items:
@@ -40,10 +35,7 @@
         - "apt-get update"
 
     - name: Install lxd
-      apt:
-        name: lxd
-        state: latest
-        default_release: trusty-backports
+      command: snap install lxd
 
     - name: lxd new group
       shell: newgrp lxd

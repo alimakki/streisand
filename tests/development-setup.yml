@@ -43,18 +43,21 @@
     - name: Install lxd
       command: snap install lxd
 
+    - name: Create the lxd group
+      command: addgroup lxd
+
     - name: lxd new group
       shell: newgrp lxd
 
     - block:
         - name: lxd init config
-          shell: lxd init --auto --storage-backend dir
+          shell: /snap/bin/lxd init --auto --storage-backend dir
 
         - name: lxd create network
-          shell: lxc network create testbr0
+          shell: /snap/bin/lxc network create testbr0
 
         - name: lxd attach network to default profile
-          shell: lxc network attach-profile testbr0 default eth0
+          shell: /snap/bin/lxc network attach-profile testbr0 default eth0
       ignore_errors: yes
 
     - name: restart lxd

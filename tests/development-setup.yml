@@ -43,22 +43,11 @@
     - name: Install lxd
       command: snap install lxd
 
-    - name: Create the lxd group
-      command: addgroup lxd
-
     - name: lxd new group
-      shell: newgrp lxd
+      shell: lxd --group lxd
 
     - name: start lxd
       command: snap start lxd
-
-    - name: ls -ll lxd
-      shell: ls -ll /var/lib/lxd/unix.socket
-      register: lxd_dir
-
-    - name: debug the contents of the lxd directory
-      debug:
-        msg: "{{ lxd_dir.stdout }}"
 
     - name: set permission on lxd daemon
       file:

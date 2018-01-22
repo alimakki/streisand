@@ -115,5 +115,13 @@
       command: lxc info streisand
       register: lxc_info
 
+    - name: Get path info
+      shell: "echo $PATH"
+      register: classpath
+
+    - name: Debug the path
+      debug:
+        msg: "{{ classpath.stdout }}"
+
     - debug:
         var: lxc_info.stdout_lines

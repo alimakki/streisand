@@ -5,26 +5,6 @@
 	<key>PayloadContent</key>
 	<array>
 		<dict>
-            <key>PayloadCertificateFileName</key>
-            <string>ca.crt</string>
-            <key>PayloadContent</key>
-            <data>
-            {{ ikev2_ca_base64.stdout }}
-            </data>
-            <key>PayloadDescription</key>
-            <string>IKEv2 Root CA</string>
-            <key>PayloadDisplayName</key>
-            <string>ca-certificate</string>
-            <key>PayloadIdentifier</key>
-            <string>com.apple.security.root.{{ ikev2_root_mobileconfig_uuid.stdout }}</string>
-            <key>PayloadType</key>
-            <string>com.apple.security.root</string>
-            <key>PayloadUUID</key>
-            <string>{{ ikev2_root_mobileconfig_uuid.stdout }}</string>
-            <key>PayloadVersion</key>
-            <integer>1</integer>
-        </dict>
-		<dict>
 			<key>Password</key>
 			<string>{{ client_content[2].stdout }}</string>
 			<key>PayloadCertificateFileName</key>
@@ -47,6 +27,26 @@
 			<integer>1</integer>
 		</dict>
 		<dict>
+            <key>PayloadCertificateFileName</key>
+            <string>ca.crt</string>
+            <key>PayloadContent</key>
+            <data>
+            {{ ikev2_ca_base64.stdout }}
+            </data>
+            <key>PayloadDescription</key>
+            <string>IKEv2 Root CA</string>
+            <key>PayloadDisplayName</key>
+            <string>ca-certificate</string>
+            <key>PayloadIdentifier</key>
+            <string>com.apple.security.root.{{ ikev2_root_mobileconfig_uuid.stdout }}</string>
+            <key>PayloadType</key>
+            <string>com.apple.security.root</string>
+            <key>PayloadUUID</key>
+            <string>{{ ikev2_root_mobileconfig_uuid.stdout }}</string>
+            <key>PayloadVersion</key>
+            <integer>1</integer>
+        </dict>
+		<dict>
 			<key>IKEv2</key>
 			<dict>
 				<key>AuthenticationMethod</key>
@@ -56,9 +56,9 @@
 					<key>DiffieHellmanGroup</key>
 					<integer>19</integer>
 					<key>EncryptionAlgorithm</key>
-					<string>AES-256-GCM</string>
+					<string>AES-128-GCM</string>
 					<key>IntegrityAlgorithm</key>
-					<string>SHA2-512</string>
+					<string>SHA2-256</string>
 					<key>LifeTimeInMinutes</key>
 					<integer>10</integer>
 				</dict>
@@ -77,9 +77,9 @@
 					<key>DiffieHellmanGroup</key>
 					<integer>19</integer>
 					<key>EncryptionAlgorithm</key>
-					<string>AES-256-GCM</string>
+					<string>AES-128-GCM</string>
 					<key>IntegrityAlgorithm</key>
-					<string>SHA2-512</string>
+					<string>SHA2-256</string>
 					<key>LifeTimeInMinutes</key>
 					<integer>10</integer>
 				</dict>
@@ -108,11 +108,11 @@
 			<key>PayloadDisplayName</key>
 			<string>IPsec IKEv2 VPN - {{ client_content[0].stdout }}</string>
 			<key>PayloadIdentifier</key>
-			<string>com.apple.vpn.managed.{{ ikev2_managed_mobileconfig_uuid }}</string>
+			<string>com.apple.vpn.managed.{{ ikev2_managed_mobileconfig_uuid.stdout }}</string>
 			<key>PayloadType</key>
 			<string>com.apple.vpn.managed</string>
 			<key>PayloadUUID</key>
-			<string>{{ ikev2_managed_mobileconfig_uuid }}</string>
+			<string>{{ ikev2_managed_mobileconfig_uuid.stdout }}</string>
 			<key>PayloadVersion</key>
 			<integer>1</integer>
 			<key>Proxies</key>

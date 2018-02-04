@@ -32,8 +32,8 @@
   register: ikev2_server_name
   changed_when: False
 
-- name: Base64 encode the CA and server certificate
-  shell: "cat {{ ikev2_path }}/server.crt {{ ikev2_path }}/ca.crt | openssl base64"
+- name: Base64 encode the CA certificate
+  shell: "cat {{ ikev2_path }}/ca.crt | openssl base64"
   register: ikev2_ca_base64
   changed_when: False
 

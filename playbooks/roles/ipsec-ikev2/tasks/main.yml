@@ -111,7 +111,7 @@
 
 - name: Set permissions on the server p12 password
   file:
-    path: "{{ ipsec_preshared_key_file }}"
+    path: "{{ ikev2_server_p12_password_file }}"
     owner: root
     group: root
     mode: 0600

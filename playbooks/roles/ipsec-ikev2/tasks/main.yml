@@ -104,7 +104,24 @@
     loop_var: "client"
     label: "{{ client.item }}"
 
-- name: Export the p12 file that contain the servier certificate, private key, and CA certificate
+- name: Generate a password for the server p12 file
+  shell: "{{ streisand_word_gen.psk }} > {{ ikev2_server_p12_password_file }}"
+  args:
+    creates: "{{ ikev2_server_p12_password_file }}"
+
+- name: Set permissions on the server p12 password
+  file:
+    path: "{{ ipsec_preshared_key_file }}"
+    owner: root
+    group: root
+    mode: 0600
+
+- name: Register the contents of server p12 password
+  command: "cat {{ ikev2_server_p12_password_file }}"
+  register: server_p12_password
+  changed_when: False
+
+- name: Generate a server p12 file
   command: >
     openssl pkcs12 -export
     -in {{ ikev2_path }}/server.crt
@@ -112,14 +129,14 @@
     -name {{ ikev2_server_name.stdout }}
     -out {{ ikev2_path }}/{{ ikev2_server_name.stdout }}.p12
     -certfile {{ ikev2_path }}/ca.crt
-    -passout pass:"foobar"
+    -passout pass:"{{ server_p12_password.stdout }}"
   creates: "{{ ikev2_path }}/{{ ikev2_server_name.stdout }}.p12"
 
 - name: Import the server p12 file into the NSS database
   expect:
     command: "ipsec import {{ ikev2_path }}/{{ ikev2_server_name.stdout }}.p12"
     responses:
-      "Enter password for PKCS12 file": "foobar"
+      "Enter password for PKCS12 file": "{{ server_p12_password.stdout }}"
 
 - name: Generate the IPsec-IKEv2 configuration file
   template:

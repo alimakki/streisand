@@ -33,3 +33,49 @@
   shell: make -j {{ ansible_processor_cores }} programs && make install
   args:
     chdir: "{{ libreswan_compilation_directory }}"
+
+- name: Copy the ipsec.conf file
+  template:
+    src: ipsec.conf.j2
+    dest: /etc/ipsec/ipsec.conf
+    owner: root
+    group: root
+    mode: 0600
+
+- name: Copy the ipsec.secrets file
+  copy:
+    src: ipsec.secrets
+    dest: /etc/ipsec.d/ipsec.secrets
+    owner: root
+    group: root
+    mode: 0600
+
+- name: Copy the modified rsyslog configuration into place that prevents Libreswan traffic from being logged
+  copy:
+    src: 40-ipsec.rsyslog.conf
+    dest: /etc/rsyslog.d/40-ipsec.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: Restart rsyslog for Libreswan
+
+- name: Ensure redirects are disabled immediately
+  shell: echo 0 | tee /proc/sys/net/ipv4/conf/*/*_redirects
+
+- name: Generate a certificate database file
+  script: generate-certificate-database.sh
+  args:
+    creates: /etc/ipsec.d/cert8.db
+
+- name: "Install IPsec iptables service file"
+  template:
+    src: ipsec-iptables.service.j2
+    dest: /etc/systemd/system/ipsec-iptables.service
+    mode: 0644
+
+- name: "Enable the ipsec-iptables service"
+  systemd:
+    daemon_reload: yes
+    name: ipsec-iptables.service
+    enabled: yes
+    state: started

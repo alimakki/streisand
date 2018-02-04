@@ -160,7 +160,7 @@
 - name: Generate the IPsec-IKEv2 secrets file
   template:
     src: ipsec.ikev2.secrets.j2
-    dest: /etc/ipsec.d/ikev2.conf
+    dest: /etc/ipsec.d/ipsec.ikev2.secrets
     owner: root
     group: root
     mode: 0600

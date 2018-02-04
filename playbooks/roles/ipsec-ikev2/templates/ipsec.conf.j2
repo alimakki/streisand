@@ -27,6 +27,8 @@ conn ikev2
     sha2-truncbug=no
     fragmentation=yes
     encapsulation=yes
-    ike=aes-sha256;dh24,aes_gcm_8_128-null;dh24,aes-sha256;dh20,aes_gcm_8_128-null;dh20
-    phase2alg=aes-sha256;dh24,aes_gcm_8_128-null;dh24,aes-sha256;dh20,aes_gcm_8_128-null;dh20
+    # propose AES_GCM using SHA2 as the prf
+    # and diffie-hellman group 19
+    ike=aes_gcm256-sha2;dh19
+    phase2alg=aes_gcm_c-256-null;dh19
     phase2=esp

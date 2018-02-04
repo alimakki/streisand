@@ -3,7 +3,6 @@ ikev2_request_subject: "/C={{ ikev2_key_country }}/ST={{ ikev2_key_province }}/L
 ikev2_path: /etc/ipsec.d/certs
 ikev2_ca: "{{ ikev2_path }}/ca"
 ikev2_server_common_name_file: "{{ ikev2_path }}/ikev2_server_common_name"
-ikev2_server_p12_password_file: "{{ ikev2_path }}/ikev2_server_p12_password"
 
 ipsec_ikev2_firewall_rules:
   - "iptables --wait {{ streisand_iptables_wait }} -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT"

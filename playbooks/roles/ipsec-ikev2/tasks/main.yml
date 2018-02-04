@@ -138,13 +138,21 @@
     responses:
       "Enter password for PKCS12 file": "{{ server_p12_password.stdout }}"
 
+- name: Generate the IPsec-IKEv2 secrets file
+  template:
+    src: ipsec.ikev2.secrets.j2
+    dest: /etc/ipsec.d/ikev2.conf
+    owner: root
+    group: root
+    mode: 0600
+
 - name: Generate the IPsec-IKEv2 configuration file
   template:
     src: ipsec.conf.j2
     dest: /etc/ipsec.d/ikev2.conf
     owner: root
     group: root
-    mode: 0644
+    mode: 0600
   notify: Restart Libreswan
 
 # Ensure ikev2 firewall rules are in place

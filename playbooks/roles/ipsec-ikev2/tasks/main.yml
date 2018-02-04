@@ -108,6 +108,23 @@
   register: server_p12_password
   changed_when: False
 
+- name: Generate a password for the server p12 file
+  shell: "{{ streisand_word_gen.psk }} > {{ ikev2_server_p12_password_file }}"
+  args:
+    creates: "{{ ikev2_server_p12_password_file }}"
+
+- name: Set permissions on the server p12 password
+  file:
+    path: "{{ ipsec_preshared_key_file }}"
+    owner: root
+    group: root
+    mode: 0600
+
+- name: Register the contents of server p12 password
+  command: "cat {{ ikev2_server_p12_password_file }}"
+  register: server_p12_password
+  changed_when: False
+
 - name: Generate a server p12 file
   command: >
     openssl pkcs12 -export

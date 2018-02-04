@@ -1,9 +1,0 @@
----
-- name: Ensure UFW allows IPSec/IKEv2
-  ufw:
-    to_port: "{{ item }}"
-    proto: "udp"
-    rule: "allow"
-  with_items:
-    - "500"
-    - "4500"

@@ -1,12 +1,12 @@
 [Unit]
-Description=Set iptables rules required for L2TP/IKEv2/IPsec gateway
+Description=Set iptables rules required for IPsec-IKEv2 gateway
 After=network.target
 Before=ipsec.service
 
 [Service]
 Type=oneshot
 RemainAfterExit=true
-{% for rule in l2tp_ipsec_firewall_rules %}
+{% for rule in ipsec_firewall_rules %}
 ExecStart=/sbin/{{ rule }}
 {% endfor %}
 

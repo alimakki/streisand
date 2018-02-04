@@ -7,9 +7,7 @@ conn ikev2
     leftsendcert=always
     leftsubnet=0.0.0.0/0
     leftrsasigkey=%cert
-    # Clients
-    # right=%any we only want the ones we generated
-    rightaddresspool=10.0.10.1-10.0.10.254
+    rightaddresspool=192.168.42.1-192.168.42.254
     # optional rightid with restrictions
     rightca=%same
     rightrsasigkey=%cert
@@ -21,6 +19,7 @@ conn ikev2
     narrowing=yes
     dpddelay=30
     dpdtimeout=120
+    mobike=yes
     dpdaction=clear
     auto=add
     ikev2=insist

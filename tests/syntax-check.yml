@@ -75,8 +75,9 @@
     - genesis-linode
     - genesis-rackspace
     - ip-forwarding
-    - l2tp-ipsec
+    - ipsec-ikev2
     - lets-encrypt
+    - libreswan
     - monit
     - nginx
     - openconnect
@@ -88,7 +89,7 @@
     - streisand-gateway
     - streisand-mirror
     - stunnel
-    - sysctl
+    - systemctl
     - test-client
     - tinyproxy
     - tor-bridge

@@ -1,4 +1,8 @@
 ---
+- name: Install LibreSwan
+  include_role:
+    name: libreswan
+
 - name: Create the ikev2 certificates directory directory
   file:
     path: "{{ ikev2_path }}"
@@ -125,3 +129,6 @@
     group: root
     mode: 0644
   notify: Restart Libreswan
+
+# Ensure ikev2 firewall rules are in place
+- import_tasks: firewall.yml

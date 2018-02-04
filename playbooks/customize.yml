@@ -16,10 +16,6 @@
       prompt: "Enable IPSec/IKEv2? Press enter for default "
       default: "yes"
       private: no
-    - name: streisand_l2tp_enabled
-      prompt: "Enable L2TP/IPSec? Press enter for default "
-      default: "no"
-      private: no
     - name: streisand_openconnect_enabled
       prompt: "Enable OpenConnect? Press enter for default "
       default: "yes"
@@ -70,10 +66,6 @@
         path: "{{ streisand_site_vars }}"
         regexp: "^streisand_ikev2_enabled: (?:yes|no)$"
         line: "streisand_ikev2_enabled: {{ streisand_ikev2_enabled }}"
-    - lineinfile:
-        path: "{{ streisand_site_vars }}"
-        regexp: "^streisand_l2tp_enabled: (?:yes|no)$"
-        line: "streisand_l2tp_enabled: {{ streisand_l2tp_enabled }}"
     - lineinfile:
         path: "{{ streisand_site_vars }}"
         regexp: "^streisand_openconnect_enabled: (?:yes|no)$"

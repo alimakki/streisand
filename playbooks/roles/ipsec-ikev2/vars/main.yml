@@ -3,3 +3,12 @@ ikev2_request_subject: "/C={{ ikev2_key_country }}/ST={{ ikev2_key_province }}/L
 ikev2_path: /etc/ipsec.d/certs
 ikev2_ca: "{{ ikev2_path }}/ca"
 ikev2_server_common_name_file: "{{ ikev2_path }}/ikev2_server_common_name"
+
+ipsec_ikev2_firewall_rules:
+  - "iptables --wait {{ streisand_iptables_wait }} -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT"
+  - "iptables --wait {{ streisand_iptables_wait }} -A INPUT -i lo -j ACCEPT"
+  - "iptables --wait {{ streisand_iptables_wait }} -A INPUT -p udp --dport 67:68 --sport 67:68 -j ACCEPT"
+  - "iptables --wait {{ streisand_iptables_wait }} -A INPUT -p udp -m multiport --dports 500,4500 -j ACCEPT"
+  - "iptables --wait {{ streisand_iptables_wait }} -A FORWARD -i eth+ -o ppp+ -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT"
+  - "iptables --wait {{ streisand_iptables_wait }} -A FORWARD -i ppp+ -o eth+ -j ACCEPT"
+  - "iptables --wait {{ streisand_iptables_wait }} -t nat -A POSTROUTING -s 192.168.42.0/24 -o eth+ -j SNAT --to-source {{ ansible_default_ipv4.address }}"

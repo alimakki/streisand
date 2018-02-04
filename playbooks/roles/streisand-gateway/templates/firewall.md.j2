@@ -12,10 +12,9 @@ These ports are open by default when Streisand creates a new server from scratch
 If you are installing Streisand on an existing server or alternate provider then you need to make sure the firewall allows traffic to the new server on the following ports:
 
 ---
-{% if streisand_l2tp_enabled %}
-* L2TP/IPsec
+{% if streisand_ikev2_enabled %}
+* IPsec/IKEv2
   * UDP - 500
-  * UDP - 1701
   * UDP - 4500
 {% endif %}
 * Nginx (Streisand Gateway)

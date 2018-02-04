@@ -20,16 +20,12 @@
     - common
     - gpg
     - ssh
-    # OpenConnect must be set up before L2TP/IKEv2/IPsec in order to avoid
+    # OpenConnect must be set up before IPSec/IKEv2 in order to avoid
     # compilation issues.
     - role: openconnect
       when: streisand_openconnect_enabled
-    - role: libreswan
-      when: streisand_ikev2_enabled or streisand_l2tp_enabled
     - role: ipsec-ikev2
       when: streisand_ikev2_enabled
-    - role: l2tp-ipsec
-      when: streisand_l2tp_enabled
     - role: openvpn
       when: streisand_openvpn_enabled
     - role: shadowsocks

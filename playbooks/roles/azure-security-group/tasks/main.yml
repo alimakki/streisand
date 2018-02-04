@@ -55,33 +55,27 @@
         priority: 120
 
 
-# L2TP/IPsec
+# IPSec/IKEv2
 # ---
-- name: Open L2TP/IPsec ports in the Azure security group
+- name: Open IPSec/IKEv2 ports in the Azure security group
   azure_rm_securitygroup:
     name: "{{ azure_resource_group_name }}"
     resource_group: "{{ azure_resource_group_name }}"
     location: "{{ azure_region }}"
     rules:
-      - name: "AllowL2TPPort500"
+      - name: "AllowIKEv2Port500"
         destination_port_range: "500"
         protocol: Udp
         access: Allow
         direction: Inbound
         priority: 113
-      - name: "AllowL2TPPort1701"
-        destination_port_range: "1701"
-        protocol: Udp
-        access: Allow
-        direction: Inbound
-        priority: 114
-      - name: "AllowL2TPPort4500"
+      - name: "AllowIKEv2Port4500"
         destination_port_range: "4500"
         protocol: Udp
         access: Allow
         direction: Inbound
         priority: 115
-  when: streisand_l2tp_enabled
+  when: streisand_IKEv2_enabled
 
 # Shadowsocks
 # ---

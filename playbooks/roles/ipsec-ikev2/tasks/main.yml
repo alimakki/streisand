@@ -91,19 +91,6 @@
     loop_var: "client_content"
     label: "{{ client_content[0].item }}"
 
-- name: Add the CA public certificate to the NSS database
-  command: "certutil -A -i {{ ikev2_path }}/ca.crt -n \"ca-certificate\" -k rsa -x -d sql:/etc/ipsec.d -t \"CT,,\" -2"
-
-- name: Add the server public certificate to the NSS database
-  command: "certutil -A -i {{ ikev2_path }}/server.crt -n \"{{ ikev2_server_name.stdout }}\" -k rsa -x -d sql:/etc/ipsec.d -t \",,\" -1 -6 -8 \"{{ ikev2_server_name.stdout }}\""
-
-- name: Add the client public certificate(s) to the NSS database
-  command: "certutil -A -i {{ ikev2_path }}/{{ client.stdout }}/client.crt -n \"{{ client.stdout }}\" -k rsa -x -d sql:/etc/ipsec.d -t \",,\" -1 -6 -8 \"{{ client.stdout }}\""
-  with_items: "{{ vpn_client_names.results }}"
-  loop_control:
-    loop_var: "client"
-    label: "{{ client.item }}"
-
 - name: Generate a password for the server p12 file
   shell: "{{ streisand_word_gen.psk }} > {{ ikev2_server_p12_password_file }}"
   args:
@@ -131,6 +118,21 @@
     -certfile {{ ikev2_path }}/ca.crt
     -passout pass:"{{ server_p12_password.stdout }}"
   creates: "{{ ikev2_path }}/{{ ikev2_server_name.stdout }}.p12"
+
+- name: Add the CA public certificate to the NSS database
+  command: "certutil -A -i {{ ikev2_path }}/ca.crt -n \"ca-certificate\" -k rsa -x -d sql:/etc/ipsec.d -t \"CT,,\" -2"
+
+- name: Add the client p12 file(s) to the NSS database
+  expect:
+    command: "ipsec import {{ ikev2_path }}/{{ client[0].item }}.p12"
+    responses:
+      "Enter password for PKCS12 file": "{{ client[1].stdout }}"
+  with_together:
+    - "{{ vpn_client_names.results }}" 
+    - "{{ vpn_client_pkcs12_password_list.results }}"
+  loop_control:
+    loop_var: "client"
+    label: "{{ client.item }}"
 
 - name: Import the server p12 file into the NSS database
   expect:

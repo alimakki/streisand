@@ -34,13 +34,11 @@
   args:
     chdir: "{{ libreswan_compilation_directory }}"
 
-- name: Copy the ipsec.conf file
-  template:
-    src: ipsec.conf.j2
-    dest: /etc/ipsec/ipsec.conf
-    owner: root
-    group: root
-    mode: 0600
+#- name: Copy the ipsec.conf file
+#  template:
+#    src: ipsec.conf.j2
+#    dest: /etc/ipsec/ipsec.conf
+#    mode: 0600
 
 - name: Copy the ipsec.secrets file
   copy:

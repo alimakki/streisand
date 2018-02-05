@@ -120,7 +120,7 @@
   creates: "{{ ikev2_path }}/{{ ikev2_server_name.stdout }}.p12"
 
 - name: Add the CA public certificate to the NSS database
-  command: "certutil -A -i {{ ikev2_path }}/ca.crt -n \"ca-certificate\" -k rsa -x -d sql:/etc/ipsec.d -t \"CT,,\" -2"
+  command: "certutil -A -i {{ ikev2_path }}/ca.crt -n \"ca-certificate\" -k rsa -d sql:/etc/ipsec.d -t \"CT,,\""
 
 - name: Add the client p12 file(s) to the NSS database
   expect:
@@ -132,21 +132,13 @@
     - "{{ vpn_client_pkcs12_password_list.results }}"
   loop_control:
     loop_var: "client"
-    label: "{{ client.item }}"
+    label: "{{ client[0].item }}"
 
 - name: Import the server p12 file into the NSS database
   expect:
     command: "ipsec import {{ ikev2_path }}/{{ ikev2_server_name.stdout }}.p12"
     responses:
       "Enter password for PKCS12 file": "{{ server_p12_password.stdout }}"
-
-- name: Generate the IPsec-IKEv2 secrets file
-  template:
-    src: ipsec.ikev2.secrets.j2
-    dest: /etc/ipsec.d/ipsec.ikev2.secrets
-    owner: root
-    group: root
-    mode: 0600
 
 - name: Generate the IPsec-IKEv2 configuration file
   template:

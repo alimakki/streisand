@@ -7,18 +7,18 @@ conn ikev2
     leftsubnet=0.0.0.0/0
     leftrsasigkey=%cert
     rightaddresspool=192.168.42.10-192.168.42.250
-    # optional rightid with restrictions
+    right=%any
     rightca=%same
     rightrsasigkey=%cert
     # connection configuration
     # DNS servers for clients to use
     modecfgdns={{ upstream_dns_servers | join(',') }}
-    narrowing=yes
+    narrowing=no
     dpddelay=30
     dpdtimeout=120
     mobike=yes
     dpdaction=clear
-    auto=add
+    auto=start
     ikev2=insist
     rekey=no
     sha2-truncbug=no

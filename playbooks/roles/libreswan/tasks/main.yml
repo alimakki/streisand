@@ -34,13 +34,13 @@
   args:
     chdir: "{{ libreswan_compilation_directory }}"
 
-- name: Copy the ipsec.conf file
+- name: Generate IPsec configuration file
   template:
     src: ipsec.conf.j2
-    dest: /etc/ipsec/ipsec.conf
+    dest: /etc/ipsec.conf
     owner: root
     group: root
-    mode: 0600
+    mode: 0644
 
 - name: Copy the ipsec.secrets file
   copy:
@@ -58,9 +58,6 @@
     group: root
     mode: 0644
   notify: Restart rsyslog for Libreswan
-
-- name: Ensure redirects are disabled immediately
-  shell: echo 0 | tee /proc/sys/net/ipv4/conf/*/*_redirects
 
 - name: Generate a certificate database file
   script: generate-certificate-database.sh

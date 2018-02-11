@@ -1,31 +1,34 @@
 
+# to help debug config verification run ipsec auto --add ikev2
 conn ikev2
     left={{ ansible_default_ipv4.address }}
-    leftcert=/etc/ipsec.d/certs
-    leftid={{ ansible_default_ipv4.address }}
+    leftca=ca-certificate
+    leftcert={{ ikev2_server_name.stdout }}
+    leftid=@{{ ansible_default_ipv4.address }}
     leftsendcert=always
-    leftsubnet=0.0.0.0/0
+    leftsubnet=0.0.0.0/32
     leftrsasigkey=%cert
     rightaddresspool=192.168.42.10-192.168.42.250
     right=%any
     rightca=%same
     rightrsasigkey=%cert
-    # connection configuration
-    # DNS servers for clients to use
     modecfgdns={{ upstream_dns_servers | join(',') }}
     narrowing=no
     dpddelay=30
     dpdtimeout=120
-    mobike=yes
+    mobike=no
     dpdaction=clear
-    auto=start
+    # initiate the connection after loading it
+    auto=add
     ikev2=insist
     rekey=no
     sha2-truncbug=no
     fragmentation=yes
     encapsulation=yes
-    # propose AES_GCM using SHA2 as the prf
-    # and diffie-hellman group 19
+    # propose AES_GCM_128 using SHA256
+    # for the pseudo random number generator 
+    # and diffie-hellman group 19 (ecp_256)
     ike=aes_gcm128-sha2;dh19
-    phase2alg=aes_gcm_c-128-null
+    # explicity set 16 byte ICV (_a=8, _b=12, _c=16)
+    phase2alg=aes_gcm_c-128-null;dh19
     phase2=esp

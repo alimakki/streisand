@@ -3,9 +3,8 @@ version 2.0
 config setup
   virtual_private=%v4:10.0.10.0/24,%v4:192.168.0.0/16,%v4:172.16.0.0/12,%v4:!192.168.42.0/24
   protostack=netkey
-  nhelpers=-1
   interfaces=%defaultroute
   logfile=/var/log/pluto.log
   plutodebug="all crypt"
 
-include /etc/ipsec.d/ipsec.*.conf
+include /etc/ipsec.d/*.conf

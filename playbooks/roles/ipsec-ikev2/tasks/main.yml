@@ -172,7 +172,15 @@
     owner: root
     group: root
     mode: 0600
-  notify: Restart Libreswan
+
+- name: Enable and start IPsec
+  systemd:
+    daemon_reload: yes
+    name: "{{ item }}"
+    enabled: yes
+    state: restarted
+  with_items:
+    - ipsec
 
 # Ensure ikev2 firewall rules are in place
 - import_tasks: firewall.yml

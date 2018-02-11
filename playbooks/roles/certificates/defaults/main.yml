@@ -7,6 +7,7 @@ tls_key_ou:       "Anvil Department"
 tls_days_valid:   "1825"
 tls_default_md:   "sha256"
 tls_key_size:     "4096"
+tls_server_cn:    "{{ tls_server_common_name.stdout }}"
 
 # What type of certificates to be generated
 # must be explicitly set by playbooks that

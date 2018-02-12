@@ -28,20 +28,39 @@
     mode: 0600
 
 - name: Generate CSRs for the clients
-  command: openssl req -new -extensions client -key client.key -out client.csr -subj "{{ tls_request_subject }}/CN={{ client_name.stdout }}" -config {{ ca_path }}/openssl.cnf
+  shell: >
+    openssl req 
+    -utf8
+    -new
+    -key client.key
+    -out client.csr 
+    -subj "{{ tls_request_subject }}/CN={{ client_name.stdout }}"
+    -batch
+    -config <(cat {{ ca_path }}/openssl.cnf <(printf "[client]\nsubjectAltName=DNS:{{ client_name.stdout }}"))
   args:
     chdir: "{{ tls_client_path }}/{{ client_name.stdout }}"
     creates: client.csr
+    executable: bash
   with_items: "{{ vpn_client_names.results }}"
   loop_control:
     loop_var: "client_name"
     label: "{{ client_name.item }}"
 
 - name: Generate certificates for the clients
-  command: openssl x509 -extensions client -CA {{ tls_ca }}.crt -CAkey {{ tls_ca }}.key -CAcreateserial -req -days {{ tls_days_valid }} -in client.csr -out client.crt -extfile {{ ca_path }}/openssl.cnf
+  shell: >
+    openssl ca
+    -utf8
+    -batch
+    -create_serial
+    -extensions CLIENT
+    -config <(cat {{ ca_path }}/openssl.cnf <(printf "[client]\nsubjectAltName=DNS:{{ client_name.stdout }}"))
+    -days {{ tls_days_valid }}
+    -in client.csr
+    -out client.crt
   args:
     chdir: "{{ tls_client_path }}/{{ client_name.stdout }}"
     creates: client.crt
+    executable: bash
   with_items: "{{ vpn_client_names.results }}"
   loop_control:
     loop_var: "client_name"

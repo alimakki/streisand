@@ -48,13 +48,14 @@
 
 - name: Generate certificates for the clients
   shell: >
-    openssl ca
-    -utf8
-    -batch
-    -create_serial
-    -extensions CLIENT
-    -config <(cat {{ ca_path }}/openssl.cnf <(printf "[client]\nsubjectAltName=DNS:{{ client_name.stdout }}"))
-    -days {{ tls_days_valid }}
+    openssl
+    x509
+    -CA {{ tls_ca }}.crt
+    -CAkey {{ tls_ca }}.key
+    -CAcreateserial
+    -extensions client
+    -extfile <(cat {{ ca_path }}/openssl.cnf <(printf "[client]\nsubjectAltName=DNS:{{ client_name.stdout }}"))
+    -req -days {{ tls_days_valid }}
     -in client.csr
     -out client.crt
   args:

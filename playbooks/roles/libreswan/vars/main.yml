@@ -38,7 +38,5 @@ libreswan_download_urls:
   # This CDN mirrors the Libreswan source code and signature, and
   # helps mitigate connection errors that were occurring when using
   # the project's official download location.
-  #- https://d25kfp60e9u1dw.cloudfront.net/{{ libreswan_source_filename }}
-  #- https://d25kfp60e9u1dw.cloudfront.net/{{ libreswan_sig_filename }}
-  - https://download.libreswan.org/{{ libreswan_source_filename }}
-  - https://download.libreswan.org/{{ libreswan_sig_filename }}
+  - https://d25kfp60e9u1dw.cloudfront.net/{{ libreswan_source_filename }}
+  - https://d25kfp60e9u1dw.cloudfront.net/{{ libreswan_sig_filename }}

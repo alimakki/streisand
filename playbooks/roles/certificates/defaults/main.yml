@@ -9,6 +9,8 @@ tls_default_md:   "sha256"
 tls_key_size:     "4096"
 tls_server_cn:    "{{ tls_server_common_name.stdout }}"
 
+openssl_template_config_file: "openssl.cnf.j2"
+
 # What type of certificates to be generated
 # must be explicitly set by playbooks that
 # include the certificates role

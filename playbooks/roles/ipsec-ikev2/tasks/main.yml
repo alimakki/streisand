@@ -21,10 +21,11 @@
     generate_ca_server: yes
     generate_client:    yes
     generate_pkcs:      yes
-    tls_server_cn:               "{{ ansible_default_ipv4.address }}"
-    tls_key_size:                "{{ ikev2_key_size }}"
-    tls_request_subject:         "{{ ikev2_request_subject }}"
-    tls_server_common_name_file: "{{ ikev2_server_common_name_file }}"
+    tls_server_cn:                "{{ ansible_default_ipv4.address }}"
+    tls_key_size:                 "{{ ikev2_key_size }}"
+    tls_request_subject:          "{{ ikev2_request_subject }}"
+    tls_server_common_name_file:  "{{ ikev2_server_common_name_file }}"
+    openssl_template_config_file: "openssl-ikev2.cnf.j2"
     tls_sans:
       - "{{ streisand_ipv4_address }}"
 

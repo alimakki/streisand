@@ -41,7 +41,7 @@
 
 - name: Generate the OpenSSL configuration that will be used for the server certificate's req and ca commands
   template:
-    src: openssl.cnf.j2
+    src: "{{ openssl_template_config_file }}" #openssl.cnf.j2
     dest: "{{ ca_path }}/openssl.cnf"
 
 - name: Seed a blank database file that will be used when generating the Server's certificate

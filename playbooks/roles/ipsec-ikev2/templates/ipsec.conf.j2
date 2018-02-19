@@ -12,6 +12,7 @@ conn ikev2
     right=%any
     rightca=%same
     rightrsasigkey=%cert
+    rightid=%fromcert
     modecfgdns={{ upstream_dns_servers | join(',') }}
     narrowing=no
     dpddelay=30

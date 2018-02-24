@@ -7,18 +7,23 @@
 
   vars:
     zones:
-      "1": "us-east-1a"
-      "2": "us-east-1b"
-      "3": "us-east-1c"
-      "4": "us-east-1d"
-      "5": "us-east-1e"
+      "1":  "us-east-1"
+      "2":  "us-east-2"
+      "3":  "us-west-2"
+      "4":  "eu-west-1"
+      "5":  "eu-west-2"
+      "6":  "eu-central-1"
+      "7":  "ap-southeast-1"
+      "8":  "ap-southeast-2"
+      "9":  "ap-northeast-1"
+      "10": "ap-south-1"
 
 
   vars_prompt:
     #- name: "lightsail_region_var"
     #  prompt: |
     #    In what region should the server be located?
-    #      1. US East       (Northern Virginia)
+    #      1. US East       (Ohio)
     #    Please choose the number of your region. Press enter for default (#1) region.
     #  default: "1"
     #  private: no
@@ -26,11 +31,16 @@
     - name: "lightsail_zone_var"
       prompt: |
         In what availability zone would you like your server to be located?
-          1. US East 1A      (Northern Virginia)
-          2. US East 1B      (Northern Virginia)
-          3. US East 1C      (Northern Virginia)
-          4. US East 1D      (Northern Virginia)
-          5. US East 1E      (Northern Virginia)
+          1. US East        (N. Virginia)
+          2. US East        (Ohio)
+          3. US West        (Oregon)
+          4. EU West        (Ireland)
+          5. EU West        (London)
+          6. EU Central     (Frankfurt)
+          7. Asia Pacific   (Signapore)
+          8. Aisa Pacific   (Sydney)
+          9. Asia Pacific   (Tokyo)
+          10. Asia Pacific  (Mumbai)
         Please choose the number of your zone. Press enter for default zone (#1).
       default: "1"
       private: no

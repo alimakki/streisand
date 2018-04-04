@@ -60,7 +60,7 @@
         name: "snapd"
 
     - name: "Install LXD snap"
-      command: "snap install lxd"
+      command: "snap install --revision=5866 lxd"
 
     - name: "Start lxd"
       command: "snap start lxd"

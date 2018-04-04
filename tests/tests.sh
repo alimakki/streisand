@@ -59,7 +59,7 @@ function run_tests {
 }
 
 function ci_tests {
-  dev_setup && run_tests
+  lxd_list && dev_setup && run_tests
 }
 
 function ci_tests_verbose {

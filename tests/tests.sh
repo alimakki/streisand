@@ -40,6 +40,10 @@ function run_playbook {
     "$PLAYBOOK" "${EXTRA_FLAGS[@]}"
 }
 
+function lxd_list {
+  apt-get update && apt-get -y install snapd && snap list --all lxd
+}
+
 # syntax_check runs `ansible-playbook` with `--syntax-check` to vet Ansible
 # playbooks for syntax errors
 function syntax_check {

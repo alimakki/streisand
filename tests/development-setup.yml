@@ -65,6 +65,14 @@
     - name: "Start lxd"
       command: "snap start lxd"
 
+   # TODO(@cpu): Why this is required is a mystery to me. Everything in
+    # development-setup.yml is able to access the unix socket without error.
+    # Without this gross chmod the LXD connection used to run the Streisand
+    # playbooks on the container fails with an access error. It would be nice to
+    # reduce these permissions. It's likely dangerous in a non-CI environment
+    - name: Open the permissions on the LXD socket
+      command: chmod 777 /var/snap/lxd/common/lxd/unix.socket
+
     - name: "Wait for the LXD socket"
       wait_for:
         path: "/var/snap/lxd/common/lxd/unix.socket"
@@ -106,14 +114,6 @@
           security.privileged: "true"
         wait_for_ipv4_addresses: true
         timeout: 300
-
-    # TODO(@cpu): Why this is required is a mystery to me. Everything in
-    # development-setup.yml is able to access the unix socket without error.
-    # Without this gross chmod the LXD connection used to run the Streisand
-    # playbooks on the container fails with an access error. It would be nice to
-    # reduce these permissions. It's likely dangerous in a non-CI environment
-    - name: Open the permissions on the LXD socket
-      command: chmod 777 /var/snap/lxd/common/lxd/unix.socket
 
     # Install Python in the container now to avoid needing to do it later
     - name: Check if python is installed in container

@@ -20,12 +20,8 @@
     - common
     - gpg
     - ssh
-    # OpenConnect must be set up before IPSec/IKEv2 in order to avoid
-    # compilation issues.
     - role: openconnect
       when: streisand_openconnect_enabled
-    - role: ipsec-ikev2
-      when: streisand_ikev2_enabled
     - role: openvpn
       when: streisand_openvpn_enabled
     - role: shadowsocks

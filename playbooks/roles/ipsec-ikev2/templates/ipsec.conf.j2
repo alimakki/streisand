@@ -8,7 +8,7 @@ conn ikev2
     leftsendcert=always
     leftsubnet=0.0.0.0/32
     leftrsasigkey=%cert
-    rightaddresspool=192.168.42.10-192.168.42.250
+    rightaddresspool=10.0.10.10-10.0.10.250
     right=%any
     rightca=%same
     rightrsasigkey=%cert
@@ -30,6 +30,6 @@ conn ikev2
     # for the pseudo random number generator 
     # and diffie-hellman group 19 (ecp_256)
     ike=aes_gcm128-sha2;dh19
-    # explicity set 16 byte ICV (_a=8, _b=12, _c=16)
+    # explicity set 16 bit ICV (_a=8, _b=12, _c=16)
     phase2alg=aes_gcm_c-128-null;dh19
     phase2=esp

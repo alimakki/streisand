@@ -21,7 +21,7 @@
   - [Acmetool (from PPA)](https://github.com/StreisandEffect/streisand/blob/master/playbooks/roles/lets-encrypt/tasks/install.yml)
 
 ## Source
-- [Libreswan](https://github.com/StreisandEffect/streisand/blob/master/playbooks/roles/l2tp-ipsec/vars/main.yml)
+- [Libreswan](https://github.com/StreisandEffect/streisand/blob/master/playbooks/roles/ipsec-ikev2/vars/main.yml)
 - [OpenConnect](https://github.com/StreisandEffect/streisand/blob/master/playbooks/roles/openconnect/vars/main.yml)
 - [OpenVPN (from build.openvpn.net)](https://github.com/StreisandEffect/streisand/blob/master/playbooks/roles/openvpn/vars/mirror.yml)
 - [Shadowsocks (from github.com/shadowsocks)](https://github.com/StreisandEffect/streisand/blob/master/playbooks/roles/shadowsocks/tasks/main.yml)

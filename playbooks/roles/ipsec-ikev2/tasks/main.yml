@@ -1,8 +1,4 @@
 ---
-- name: Install LibreSwan
-  include_role:
-    name: libreswan
-
 - name: Create the ikev2 certificates directory directory
   file:
     path: "{{ ikev2_path }}"
@@ -17,7 +13,7 @@
     ca_path:            "{{ ikev2_path }}"
     tls_ca:             "{{ ikev2_ca }}"
     tls_client_path:    "{{ ikev2_path }}"
-    vpn_name:           "ipsec_ikev2"
+    vpn_name:           "ipsec-ikev2"
     generate_ca_server: yes
     generate_client:    yes
     generate_pkcs:      yes

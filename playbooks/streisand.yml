@@ -20,7 +20,7 @@
     - common
     - gpg
     - ssh
-    - role: ipsec_ikev2
+    - role: ipsec-ikev2
       when: streisand_ikev2_enabled
     - role: openconnect
       when: streisand_openconnect_enabled

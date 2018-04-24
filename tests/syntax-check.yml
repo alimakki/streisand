@@ -79,7 +79,6 @@
     - ipsec-ikev2
     - lets-encrypt
     - libreswan
-    - monit
     - nginx
     - openconnect
     - openvpn

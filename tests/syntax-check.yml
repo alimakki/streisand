@@ -89,7 +89,7 @@
     - streisand-gateway
     - streisand-mirror
     - stunnel
-    - systemctl
+    - sysctl
     - test-client
     - tinyproxy
     - tor-bridge

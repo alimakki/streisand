@@ -1,4 +1,8 @@
 ---
+- name: Install LibreSwan
+  include_role:
+    name: libreswan
+
 - name: Create the ikev2 certificates directory directory
   file:
     path: "{{ ikev2_path }}"

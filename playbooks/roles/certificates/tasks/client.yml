@@ -29,11 +29,11 @@
 
 - name: Generate CSRs for the clients
   shell: >
-    openssl req 
+    openssl req
     -utf8
     -new
     -key client.key
-    -out client.csr 
+    -out client.csr
     -subj "{{ tls_request_subject }}/CN={{ client_name.stdout }}"
     -batch
     -config <(cat {{ ca_path }}/openssl.cnf <(printf "[client]\nsubjectAltName=DNS:{{ client_name.stdout }}"))

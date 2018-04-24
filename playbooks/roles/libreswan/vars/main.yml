@@ -34,9 +34,12 @@ ipsec_firewall_rules:
   - "iptables --wait {{ streisand_iptables_wait }} -A FORWARD -i ppp+ -o eth+ -j ACCEPT"
   - "iptables --wait {{ streisand_iptables_wait }} -t nat -A POSTROUTING -s 192.168.42.0/24 -o eth+ -j SNAT --to-source {{ ansible_default_ipv4.address }}"
 
-libreswan_download_urls:
-  # This CDN mirrors the Libreswan source code and signature, and
-  # helps mitigate connection errors that were occurring when using
-  # the project's official download location.
-  - https://d25kfp60e9u1dw.cloudfront.net/{{ libreswan_source_filename }}
-  - https://d25kfp60e9u1dw.cloudfront.net/{{ libreswan_sig_filename }}
+# This CDN mirrors the Libreswan source code and signature, and
+# helps mitigate connection errors that were occurring when using
+# the project's official download location.
+libreswan_download_baseurl: "https://d25kfp60e9u1dw.cloudfront.net"
+
+libreswan_gpg_keyid: "B30FC6F9"
+
+libreswan_download_files:
+  - { "file": "{{ libreswan_source_filename }}", "sig": "{{ libreswan_sig_filename }}" }

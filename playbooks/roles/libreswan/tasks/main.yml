@@ -16,7 +16,7 @@
     project_name: "The Libreswan Project"
     project_download_baseurl: "{{ libreswan_download_baseurl }}"
     project_download_files: "{{ libreswan_download_files }}"
-    project_download_location: "{{ libreswan_source_location }}"
+    project_download_location: "{{ libreswan_src_directory }}"
     project_signer_keyid: "{{ libreswan_gpg_keyid }}"
 
 - name: Extract the Libreswan source code

@@ -2,6 +2,7 @@
 # This site config only enables IPsec/IKEv2
 
 vpn_clients: 5
+
 streisand_ikev2_enabled: yes
 streisand_openconnect_enabled: no
 streisand_openvpn_enabled: no

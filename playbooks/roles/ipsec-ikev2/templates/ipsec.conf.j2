@@ -29,7 +29,7 @@ conn ikev2
     # propose AES_GCM_128 using SHA256
     # for the pseudo random number generator 
     # and diffie-hellman group 19 (ecp_256)
-    ike=aes_gcm128-sha2;dh19
+    ike=aes_gcm_c-128-sha2;dh19
     # explicity set 16 bit ICV (_a=8, _b=12, _c=16)
     phase2alg=aes_gcm_c-128-null;dh19
     phase2=esp

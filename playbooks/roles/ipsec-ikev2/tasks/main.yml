@@ -143,7 +143,7 @@
 
 - name: Add the client p12 file(s) to the NSS database
   expect:
-    command: "ipsec import {{ ikev2_path }}/{{ client[0].stdout }}.p12"
+    command: "ipsec import {{ ikev2_path }}/{{ client[0].stdout }}/{{ client[0].stdout }}.p12"
     responses:
       "Enter password for PKCS12 file": "{{ client[1].stdout }}"
   with_together:

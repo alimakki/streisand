@@ -45,11 +45,10 @@ use-occtl = true
 pid-file = {{ ocserv_pid_file }}
 device = vpns
 default-domain = example.com
-ipv4-network = 192.168.1.0
-ipv4-netmask = 255.255.255.0
+ipv4-network = {{ ocserv_ipv4_network }}
 
 {% if streisand_ipv6_enabled %}
-ipv6-network = fda9:4efe:7e3b:03ea::/48
+ipv6-network = {{ ocserv_ipv6_network }}
 {% for item in upstream_dns_servers_v6 %}
 dns = {{ item }}
 {% endfor %}

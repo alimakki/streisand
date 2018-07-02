@@ -13,7 +13,7 @@
 
 - name: "Add IPv4/IPv6 traffic forwarding persistence service to init"
   template:
-    src: streisand-ipforward.sh
+    src: streisand-ipforward.sh.j2
     dest: /etc/init.d/streisand-ipforward
     mode: 0755
 

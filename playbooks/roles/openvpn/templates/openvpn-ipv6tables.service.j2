@@ -6,7 +6,7 @@ Before={{ openvpn_service_names | join(' ') }}
 [Service]
 Type=oneshot
 RemainAfterExit=true
-{% for rule in openvpn_firewall_rules %}
+{% for rule in openvpn_ipv6_firewall_rules %}
 ExecStart=/sbin/{{ rule }}
 {% endfor %}
 

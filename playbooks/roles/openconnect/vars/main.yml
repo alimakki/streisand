@@ -3,6 +3,7 @@ ocserv_path: "/etc/ocserv"
 ocserv_ca: "{{ ocserv_path }}/ca"
 ocserv_config_file: "{{ ocserv_path }}/ocserv.conf"
 ocserv_firewall_rule: "iptables --wait {{ streisand_iptables_wait }} -t nat -A POSTROUTING -j MASQUERADE"
+ocserv_firewall_rule_v6: "ip6tables --wait {{ streisand_iptables_wait }} -t nat -A POSTROUTING -j MASQUERADE"
 
 ocserv_days_valid: "1825"
 ocserv_pid_file:    "/var/run/ocserv.pid"

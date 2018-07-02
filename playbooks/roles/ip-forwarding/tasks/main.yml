@@ -8,7 +8,7 @@
 - name: "Enable IPv6 traffic forwarding"
   sysctl:
     name: net.ipv6.ip_forward
-    valie: 1
+    value: 1
   when: (ansible_virtualization_type != 'lxc') and (streisand_ipv6_enabled)
 
 - name: "Add IPv4/IPv6 traffic forwarding persistence service to init"

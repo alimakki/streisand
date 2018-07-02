@@ -50,7 +50,9 @@ ipv4-netmask = 255.255.255.0
 
 {% if streisand_ipv6_enabled %}
 ipv6-network = fda9:4efe:7e3b:03ea::/48
-dns = fc00::4be0
+{% for item in upstream_dns_servers_v6 %}
+dns = {{ item }}
+{% endfor %}
 ipv6-subnet-prefix = 64
 {% endif %}
 

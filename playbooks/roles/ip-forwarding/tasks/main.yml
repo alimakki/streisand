@@ -5,8 +5,14 @@
     value: 1
   when: ansible_virtualization_type != 'lxc'
 
-- name: "Add IPv4 traffic forwarding persistence service to init"
-  copy:
+- name: "Enable IPv6 traffic forwarding"
+  sysctl:
+    name: net.ipv6.ip_forward
+    valie: 1
+  when: (ansible_virtualization_type != 'lxc') and (streisand_ipv6_enabled)
+
+- name: "Add IPv4/IPv6 traffic forwarding persistence service to init"
+  template:
     src: streisand-ipforward.sh
     dest: /etc/init.d/streisand-ipforward
     mode: 0755

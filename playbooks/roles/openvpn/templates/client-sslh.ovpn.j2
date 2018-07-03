@@ -1,6 +1,6 @@
 client
 {% if streisand_ipv6_enabled %}
-remote {{ streisand_ipv6_address }} {{ openvpn_port }} tcp6
+remote {{ streisand_ipv6_address }} {{ openvpn_port_sslh }} tcp6
 {% endif %}
 remote {{ openvpn_server }} {{ openvpn_port_sslh }} tcp
 {% include "client-common.j2" %}

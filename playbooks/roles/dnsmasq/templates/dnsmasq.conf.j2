@@ -21,7 +21,7 @@ no-resolv
 {% for item in upstream_dns_servers %}
 server={{ item }}
 {% endfor %}
-{% if streisand_ipv6_enabled %}
+{% if streisand_ipv6_address is defined %}
 {% for item in upstream_dns_servers_v6 %}
 server={{ item }}
 {% endfor %}

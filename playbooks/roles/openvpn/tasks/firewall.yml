@@ -6,7 +6,7 @@
 - name: Allow OpenVPN over IPv6 through the firewall
   command: "{{ item }}"
   with_items: "{{ openvpn_ipv6_firewall_rules }}"
-  when: streisand_ipv6_enabled
+  when: streisand_ipv6_address is defined
 
 - name: Ensure UFW allows DNS requests from OpenVPN clients
   ufw:
@@ -28,7 +28,7 @@
     proto: "udp"
     rule: "allow"
     from_ip: "{{ openvpn_server_tcp_ipv6_address }}"
-  when: streisand_ipv6_enabled
+  when: streisand_ipv6_address is defined
 
 - name: Ensure UFW allows DNS requests from OpenVPN UDP IPv6 clients
   ufw:
@@ -36,7 +36,7 @@
     proto: "udp"
     rule: "allow"
     from_ip: "{{ openvpn_server_udp_ipv6_address }}"
-  when: streisand_ipv6_enabled
+  when: streisand_ipv6_address is defined
 
 - name: Ensure UFW allows OpenVPN
   ufw:
@@ -61,7 +61,7 @@
     src: openvpn-ipv6tables.service.j2
     dest: /etc/systemd/system/openvpn-ipv6tables.service
     mode: 0644
-  when: streisand_ipv6_enabled
+  when: streisand_ipv6_address is defined
 
 - name: Enable the openvpn-iptables service
   systemd:
@@ -76,4 +76,4 @@
     name: openvpn-ipv6tables.service
     enabled: yes
     state: started
-  when: streisand_ipv6_enabled
+  when: streisand_ipv6_address is defined

@@ -1,5 +1,5 @@
 client
-{% if streisand_ipv6_enabled %}
+{% if streisand_ipv6_address is defined %}
 remote {{ streisand_ipv6_address }} {{ openvpn_port}} tcp6
 {% endif %}
 remote {{ openvpn_server }} {{ openvpn_port }} tcp

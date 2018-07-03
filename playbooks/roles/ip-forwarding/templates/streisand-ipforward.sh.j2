@@ -11,7 +11,7 @@
 echo 1 > /proc/sys/net/ipv4/ip_forward
 echo 0 | tee /proc/sys/net/ipv4/conf/*/*_redirects
 
-{% if streisand_ipv6_enabled %}
+{% if streisand_ipv6_address is defined %}
 echo 1 >  /proc/sys/net/ipv6/conf/all/forwarding
 {% endif %}
 

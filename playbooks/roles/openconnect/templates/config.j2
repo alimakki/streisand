@@ -47,7 +47,7 @@ device = vpns
 default-domain = example.com
 ipv4-network = {{ ocserv_ipv4_network }}
 
-{% if streisand_ipv6_enabled %}
+{% if streisand_ipv6_address is defined %}
 ipv6-network = {{ ocserv_ipv6_network }}
 {% for item in upstream_dns_servers_v6 %}
 dns = {{ item }}

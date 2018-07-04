@@ -1,0 +1,13 @@
+[Unit]
+Description=Firewall rules required for WireGuard
+After=network.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+{% for rule in wg_firewall_rules %}
+ExecStart=/sbin/{{ rule }}
+{% endfor %}
+
+[Install]
+WantedBy=multi-user.target

@@ -5,9 +5,15 @@ After=network.target
 [Service]
 Type=oneshot
 RemainAfterExit=true
-{% for rule in wg_firewall_rules %}
+{% for rule in wireguard_firewall_rules %}
 ExecStart=/sbin/{{ rule }}
 {% endfor %}
+
+{% if streisand_ipv6_enabled %}
+{% for rule in wireguard_firewallv6_rules %}
+ExecStart=/sbin/{{ rule }}
+{% endfor %}
+{% endif %}
 
 [Install]
 WantedBy=multi-user.target

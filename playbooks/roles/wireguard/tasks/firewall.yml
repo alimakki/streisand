@@ -27,7 +27,7 @@
 - name: "Allow WireGuard over IPv6 through the firewall"
   command: "{{ item }}"
   with_items: "{{ wireguard_firewallv6_rules }}"
-  when: streisand_ipv6_addres is defined
+  when: streisand_ipv6_address is defined
 
 - name: "Add WireGuard firewall persistence service to init"
   template:

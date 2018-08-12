@@ -14,4 +14,4 @@ PrivateKey = {{ item[1].stdout }}
 [Peer]
 PublicKey = {{ wireguard_server_public_key }}
 AllowedIPs = 0.0.0.0/0 {% if streisand_ipv6_address is defined %}, ::/0 {% endif %} 
-Endpoint = {{ streisand_ipv4_address }}:{{ wireguard_port }}{% if streisand_ipv6_address is defined %}, {{ streisand_ipv6_address }}:{{ wireguard_port }} {% endif %}
+Endpoint = {{ streisand_ipv4_address }}:{{ wireguard_port }}

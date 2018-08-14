@@ -8,5 +8,9 @@ Type=oneshot
 RemainAfterExit=true
 ExecStart=/sbin/{{ ocserv_firewall_rule }}
 
+{% if streisand_ipv6_enabled %}
+ExecStart=/sbin/{{ ocserv_firewall_rule_v6 }}
+{% endif %}
+
 [Install]
 WantedBy=multi-user.target

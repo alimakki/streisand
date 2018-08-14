@@ -4,15 +4,11 @@
     to_port: "53"
     proto: "udp"
     rule: "allow"
-    from_ip: "{{ ocserv_ipv4_network }}"
-
-- name: Ensure UFW allows DNS requests from OpenConnect IPv6 clients
-  ufw:
-    to_port: "53"
-    proto: "udp"
-    rule: "allow"
-    from_ip: "{{ ocserv_ipv6_network }}"
-  when: streisand_ipv6_address is defined
+    from_ip: "{{ item.addr }}"
+  with_items:
+    - { addr: "{{ ocserv_ipv4_network }}" }
+    - { addr: "{{ ocserv_ipv6_network }}", create: "{{ streisand_ipv6_enabled }}" }
+  when: item.create | default(True) | bool
 
 - name: Ensure UFW allows OpenConnect (ocserv)
   ufw:
@@ -32,18 +28,3 @@
     name: ocserv-iptables.service
     enabled: yes
     state: started
-
-- name: Install the ocserv ipv6tables service file
-  template:
-    src: ocserv-ipv6tables.service.j2
-    dest: /etc/systemd/system/ocserv-ipv6tables.service
-    mode: 0644
-  when: streisand_ipv6_address is defined
-
-- name: Enable the ocserv-iptables service
-  systemd:
-    daemon_reload: yes
-    name: ocserv-iptables.service
-    enabled: yes
-    state: started
-  when: streisand_ipv6_address is defined

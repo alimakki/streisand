@@ -29,7 +29,7 @@
   with_items: "{{ wireguard_firewallv6_rules }}"
   when: streisand_ipv6_address is defined
 
-- name: "Add WireGuard firewall persistence service to init"
+- name: "Add WireGuard firewall persistence service"
   template:
     src: wireguard-iptables.service.j2
     dest: /etc/systemd/system/wireguard-iptables.service

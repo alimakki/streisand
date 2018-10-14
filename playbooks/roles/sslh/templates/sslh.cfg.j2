@@ -16,9 +16,7 @@ protocols:
 {% if streisand_openvpn_enabled %}
      { name: "openvpn"; host: "127.0.0.1"; port: "{{ openvpn_port }}"; probe: "builtin"; },
 {% endif %}
-{% if streisand_nginx_enabled %}
      { name: "anyprot"; host: "127.0.0.1"; port: "{{ nginx_port }}";   probe: "builtin"; }
-{% endif %}
 );
 
 on-timeout: "tls";

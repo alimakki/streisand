@@ -1,7 +1,6 @@
 ---
 - import_playbook: python.yml
 - import_playbook: lets-encrypt.yml
-  when: streisand_nginx_enabled
 
 - name: Collect diagnostics in case of error
   hosts: localhost

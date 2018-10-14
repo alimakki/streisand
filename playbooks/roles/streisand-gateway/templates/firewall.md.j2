@@ -8,8 +8,10 @@ These ports are open by default when Streisand creates a new server from scratch
 If you are installing Streisand on an existing server or alternate provider then you need to make sure the firewall allows traffic to the new server on the following ports:
 
 ---
+{% if streisand_nginx_enabled %}
 * Nginx (Streisand Gateway)
   * TCP - {{ nginx_port }}
+{% endif %}
 {% if streisand_le_enabled %}
 * HTTP (Let's Encrypt)
   * TCP - {{ le_port }}

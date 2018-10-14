@@ -48,6 +48,10 @@
       prompt: "Enable WireGuard? Press enter for default "
       default: "yes"
       private: no
+    - name: streisand_nginx_enabled
+      prompt: "Enable nginx (web gateway)? By choosing no all instructions and connection profiles will be downloaded locally"
+      default: "yes"
+      private: no
 
   tasks:
     - lineinfile:

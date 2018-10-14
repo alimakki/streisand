@@ -4,10 +4,10 @@ Unattended-Upgrade::Allowed-Origins {
     "${distro_id} stable";
     "${distro_id} ${distro_codename}-security";
 
-{%% if streisnand_nginx_enabled %}}
+{% if streisand_nginx_enabled %}
     // Autoupdate Nginx
     "nginx:${distro_codename}";
-{% endif %}}
+{% endif %}
 
 {% if streisand_openvpn_enabled %}
     // Autoupdate OpenVPN

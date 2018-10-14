@@ -58,6 +58,15 @@
     src: /etc/nginx/sites-available/streisand
     state: link
 
+- name: Ensure that all of the files in the Gateway have the proper permissions
+  file:
+    path: "{{ streisand_gateway_location }}"
+    owner: www-data
+    group: www-data
+    mode: 0750
+    state: directory
+    recurse: yes
+
 - name: Restart nginx
   systemd:
     name: nginx.service

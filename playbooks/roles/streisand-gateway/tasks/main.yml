@@ -16,15 +16,6 @@
     # fetch and clean up
     - include_tasks: fetch-and-cleanup.yml
 
-    - name: Ensure that all of the files in the Gateway have the proper permissions
-      file:
-        path: "{{ streisand_gateway_location }}"
-        owner: www-data
-        group: www-data
-        mode: 0750
-        state: directory
-        recurse: yes
-
     - meta: flush_handlers
 
     - block:

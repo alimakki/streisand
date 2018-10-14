@@ -14,6 +14,7 @@
     mode: 0600
     state: directory
 
+## TODO: create instructions for local
 - include_role:
     name: i18n-docs
   vars:
@@ -22,8 +23,9 @@
     input_template_name: "{{ doc.template }}"
     output_file_name: "{{ doc.output_file }}"
   with_items:
-    - { template: "instructions", output_file: "{{ streisand_server_name }}" }
+    - { template: "instructions", output_file: "{{ streisand_server_name }}", create: "{{ streisand_nginx_enabled }}" }
     - { template: "firewall", output_file: "{{ streisand_server_name }}-firewall-information" }
+  when: doc.create | default(True) | bool
   loop_control:
     loop_var: "doc"
     label: "{{ doc.template }}"
